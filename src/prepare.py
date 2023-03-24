@@ -7,11 +7,14 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 
 from datasets.licenseplatesdataset import LicensePlatesDataset
+from utils.seed import seed_worker, set_seed
 
 
 def main():
     glob_params = yaml.safe_load(open("params.yaml"))
     params = glob_params["prepare"]
+    set_seed(params["seed"])
+
     img_transform = transforms.Compose(
         [
             transforms.ColorJitter(brightness=0.5, hue=0.3),
@@ -36,11 +39,13 @@ def main():
         train_dataset,
         batch_size=glob_params["batch_size"],
         shuffle=True,
+        worker_init_fn=seed_worker,
         num_workers=2,
     )
     val_loader = DataLoader(
         val_dataset,
         batch_size=glob_params["batch_size"],
+        worker_init_fn=seed_worker,
         shuffle=True,
     )
 

@@ -7,6 +7,7 @@ from accelerate import Accelerator
 from torch.utils.tensorboard import SummaryWriter
 
 from models.vgg16_model import VGG16Model
+from utils.seed import set_seed
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -64,6 +65,7 @@ def train_one_epoch(
 def main():
     glob_params = yaml.safe_load(open("params.yaml"))
     params = glob_params["train"]
+    set_seed(params["seed"])
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using {device} device")
