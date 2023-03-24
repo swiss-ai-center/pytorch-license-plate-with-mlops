@@ -1,0 +1,19 @@
+## macOS specific
+.DS_Store
+
+## Python
+# Environments
+.venv
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+## Project specific
+# Data
+data/
+
+# Logs
+runs/
+
+# Models
+models/

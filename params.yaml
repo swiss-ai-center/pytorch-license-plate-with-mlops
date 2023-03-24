@@ -1,0 +1,17 @@
+batch_size: 32
+img_shape: [3, 84, 84]
+hidden_layers: [256, 128, 64]
+fc_features_in: 64
+num_classes: 4
+dropout: 0.25
+
+prepare:
+    data_dir: "data"
+    img_folder: "SyntheticITplates"
+    img_metadata_path: "SyntheticITplates/images.txt"
+    max_images: 40000
+    train_split: 0.8
+
+train:
+    lr: 0.00004
+    epochs: 40
