@@ -54,7 +54,7 @@ def train_one_epoch(
         # Save metrics after every batch
         if i % bactch_size == bactch_size - 1:
             last_loss = running_loss / bactch_size  # loss per batch
-            print("  batch {} loss: {}".format(i + 1, last_loss))
+            print(f"  batch {i + 1} loss: {last_loss}")
             tb_x = epoch_index * len(train_loader) + i + 1
             tb_writer.add_scalar("Loss/train", last_loss, tb_x)
             running_loss = 0.0
@@ -95,7 +95,9 @@ def main():
         lr=params["lr"],
     )
 
-    writer = SummaryWriter("runs/trainer_{}".format(timestamp))
+    writer = SummaryWriter(
+        os.path.join(params["log_path"], f"trainer_{timestamp}")
+    )
     epoch_index = 0
 
     train_loader = torch.load(os.path.join("data", "prepared", "train.pt"))
@@ -108,7 +110,7 @@ def main():
     best_vloss = None
 
     for _ in range(params["epochs"]):
-        print("EPOCH {}:".format(epoch_index + 1))
+        print(f"EPOCH {epoch_index + 1}:")
 
         # Make sure gradient tracking is on, and do a pass over the data
         model.train(True)
@@ -149,9 +151,12 @@ def main():
         # Track best performance, and save the model's state
         if best_vloss is None or avg_vloss < best_vloss:
             best_vloss = avg_vloss
-            os.makedirs(f"models/checkpoints_{timestamp}", exist_ok=True)
-            model_path = (
-                f"models/checkpoints_{timestamp}/model_{epoch_index + 1}"
+            ckpt_dir = os.path.join(
+                params["checkpoints_path"], f"checkpoints_{timestamp}"
+            )
+            os.makedirs(ckpt_dir, exist_ok=True)
+            model_path = os.path.join(
+                ckpt_dir, f"model_best_{epoch_index + 1}"
             )
             torch.save(model.state_dict(), model_path)
 

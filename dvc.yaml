@@ -1,0 +1,37 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - ${prepare.dataset_path}
+    - src/prepare.py
+    params:
+    - batch_size
+    - img_shape
+    - prepare.seed
+    - prepare.dataset_path
+    - prepare.dataset_folder
+    - prepare.dataset_metadata_path
+    - prepare.max_images
+    - prepare.train_split
+    - prepare.prepared_path
+    outs:
+    - ${prepare.prepared_path}
+  train:
+    cmd: python src/train.py
+    deps:
+    - ${prepare.prepared_path}
+    - src/train.py
+    - src/models/
+    params:
+    - batch_size
+    - img_shape
+    - hidden_layers
+    - fc_features_in
+    - num_classes
+    - dropout
+    - train.seed
+    - train.lr
+    - train.epochs
+    outs:
+    - ${train.log_path}
+    - ${train.checkpoints_path}

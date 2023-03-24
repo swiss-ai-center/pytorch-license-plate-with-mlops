@@ -11,9 +11,9 @@ from torchvision import transforms
 class LicensePlatesDataset(Dataset):
     def __init__(
         self,
-        data_dir: str,
-        img_folder: str,
-        img_metadata_path: str,
+        dataset_path: str,
+        dataset_folder: str,
+        dataset_metadata_path: str,
         img_shape: list[int, int, int],
         img_transform: transforms.Compose,
         max_images: int | None,
@@ -21,17 +21,17 @@ class LicensePlatesDataset(Dataset):
     ):
         """
         Args:
-            data_dir: path to the data directory
-            img_folder: path to the image folder
-            img_metadata_path: path to the image metadata
+            dataset_path: path to the data directory
+            dataset_folder: name of the dataset
+            dataset_metadata_path: path to the image metadata
             max_images: maximum number of images to load
             img_shape: image shape
             img_transform: transform to be applied on a sample
         """
-        self._data_dir = data_dir
-        self._img_folder = os.path.join(self._data_dir, img_folder)
-        self._img_metadata_path = os.path.join(
-            self._data_dir, img_metadata_path
+        self._dataset_path = dataset_path
+        self._dataset_folder = os.path.join(self._dataset_path, dataset_folder)
+        self._dataset_metadata_path = os.path.join(
+            self._dataset_path, dataset_metadata_path
         )
         self._max_images = max_images
         self._img_shape = img_shape
@@ -39,7 +39,7 @@ class LicensePlatesDataset(Dataset):
         # read the txt file each line is a image path, parse the line until ';'
         # and ignore lines that start with 'noplate'
         self._img_metadata = np.loadtxt(
-            self._img_metadata_path,
+            self._dataset_metadata_path,
             dtype=str,
             delimiter=";",
             usecols=0,
@@ -52,7 +52,7 @@ class LicensePlatesDataset(Dataset):
         return len(self._img_metadata)
 
     def __getitem__(self, idx):
-        img_path = os.path.join(self._img_folder, self._img_metadata[idx])
+        img_path = os.path.join(self._dataset_folder, self._img_metadata[idx])
         bb_path = img_path.replace(".jpg", ".mat")
         # image = read_image(img_path, mode=ImageReadMode.GRAY)
         image = Image.open(img_path)

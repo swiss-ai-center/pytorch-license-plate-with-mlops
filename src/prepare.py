@@ -25,9 +25,9 @@ def main():
     )
 
     dataset = LicensePlatesDataset(
-        data_dir=params["data_dir"],
-        img_folder=params["img_folder"],
-        img_metadata_path=params["img_metadata_path"],
+        dataset_path=params["dataset_path"],
+        dataset_folder=params["dataset_folder"],
+        dataset_metadata_path=params["dataset_metadata_path"],
         img_shape=glob_params["img_shape"],
         img_transform=img_transform,
         max_images=params["max_images"],
@@ -63,9 +63,9 @@ def main():
     print(f"  min: {np.min(train_labels[0].numpy())}")
     print(f"  max: {np.max(train_labels[0].numpy())}")
 
-    os.makedirs(os.path.join("data", "prepared"), exist_ok=True)
-    torch.save(train_loader, os.path.join("data", "prepared", "train.pt"))
-    torch.save(val_loader, os.path.join("data", "prepared", "val.pt"))
+    os.makedirs(params["prepared_path"], exist_ok=True)
+    torch.save(train_loader, os.path.join(params["prepared_path"], "train.pt"))
+    torch.save(val_loader, os.path.join(params["prepared_path"], "val.pt"))
 
     # show the first 32 images with matplotlib
     # TODO: show this only locally

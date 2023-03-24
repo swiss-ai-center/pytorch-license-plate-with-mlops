@@ -7,13 +7,16 @@ dropout: 0.25
 
 prepare:
     seed: 123
-    data_dir: "data"
-    img_folder: "SyntheticITplates"
-    img_metadata_path: "SyntheticITplates/images.txt"
+    dataset_path: "data/datasets/"
+    dataset_folder: "SyntheticITplates"
+    dataset_metadata_path: "SyntheticITplates/images.txt"
     max_images: 40000
     train_split: 0.8
+    prepared_path: "data/prepared/"
 
 train:
     seed: 123
     lr: 0.00004
     epochs: 40
+    log_path: "runs/"
+    checkpoints_path: "models/"

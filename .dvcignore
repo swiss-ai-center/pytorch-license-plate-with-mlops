@@ -11,3 +11,6 @@
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+
+## Project Specific
+data/datasets/SyntheticITplates/noplate/
