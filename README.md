@@ -32,7 +32,6 @@ TODO
 
 ## Next tasks
 
--   [ ] Add seed
 -   [ ] Add DVC
 -   [ ] Run on IICT cluster and Kubernetes
 -   [ ] Train with Ray
