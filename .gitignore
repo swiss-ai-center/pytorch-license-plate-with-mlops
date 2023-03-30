@@ -13,7 +13,6 @@ __pycache__/
 
 ## Project specific
 data/test
-out/
 
 src/testing/
 
