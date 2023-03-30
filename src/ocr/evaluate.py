@@ -26,6 +26,9 @@ def main() -> None:
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    model.to(device)
+
     max_samples = 10
 
     # We don't need gradients on to do reporting
@@ -54,7 +57,7 @@ def main() -> None:
                     [
                         str(d)
                         for d, _ in groupby(
-                            true_number_idxs[i].detach().numpy().astype(int)
+                            true_number_idxs[i].cpu().numpy().astype(int)
                         )
                         if d != params.OCRParams.GRU_BLANK_CLASS
                     ]
@@ -63,7 +66,7 @@ def main() -> None:
                     [
                         str(d)
                         for d, _ in groupby(
-                            max_number_pred_idx[i].detach().numpy().astype(int)
+                            max_number_pred_idx[i].cpu().numpy().astype(int)
                         )
                         if d != params.OCRParams.GRU_BLANK_CLASS
                     ]

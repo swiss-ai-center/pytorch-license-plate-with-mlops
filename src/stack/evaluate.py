@@ -31,6 +31,10 @@ def main() -> None:
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    localize_model.to(device)
+    ocr_model.to(device)
+
     # We don't need gradients on to do reporting
     localize_model.eval()
     ocr_model.eval()
@@ -56,7 +60,7 @@ def main() -> None:
                 bb = localize_model(vinputs_scaled_localize)
 
                 # Convert the bounding box
-                bb = bb.detach().numpy()
+                bb = bb.cpu().numpy()
                 bb *= params.LocalizeParams.IMG_SHAPE[1]
                 bb = bb.round().astype(int)
 
@@ -78,7 +82,9 @@ def main() -> None:
                     vinputs_scaled_ocr[j] = scaled
 
                 # Predict the license plate
-                pred_number, pred_canton = ocr_model(vinputs_scaled_ocr)
+                pred_number, pred_canton = ocr_model(
+                    vinputs_scaled_ocr.to(device)
+                )
 
                 # TODO: Compute the loss
                 # vloss = ocr_model.loss((pred_number, pred_canton), vlabels)
@@ -87,9 +93,10 @@ def main() -> None:
                 # Decode the number prediction
                 _, max_number_index = torch.max(pred_number, dim=2)
                 _, max_canton_index = torch.max(pred_canton, dim=1)
+
                 for j in range(max_number_index.shape[0]):
                     num_raw_prediction = list(
-                        max_number_index[j].detach().numpy()
+                        max_number_index[j].cpu().numpy()
                     )
                     number_pred = "".join(
                         [
@@ -106,7 +113,9 @@ def main() -> None:
                             (vinputs[j].shape[1], vinputs[j].shape[2]),
                             antialias=True,
                         )
-                        img_stack = torch.cat((vinputs[j], img_cropped), dim=2)
+                        img_stack = torch.cat(
+                            (vinputs[j].cpu(), img_cropped), dim=2
+                        )
                         evaluation_utils.live_log_img_pred(
                             live,
                             f"stack_pred_{i}.png",

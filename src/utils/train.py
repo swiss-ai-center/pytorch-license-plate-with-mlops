@@ -52,8 +52,8 @@ def train_one_epoch(
         # Save metrics after every batch
         last_loss = running_loss / batch_size  # loss per batch
 
-        # Log every 10 steps (10 batches)
-        if i % 10:
+        # Log every 100 steps (100 batches)
+        if i != 0 and i % 100 == 0:
             print(f"  batch {i + 1} loss: {last_loss}")
             tb_x = epoch_index * len(train_loader) + i + 1
             tb_writer.add_scalar("Loss/train", last_loss, tb_x)
@@ -110,8 +110,6 @@ def fit(
         # Log the running loss averaged per batch
         # for both training and validation
         avg_vloss = model_utils.eval(model, val_loader)
-        live.make_checkpoint
-        live.log_metric("epoch", epoch_index + 1)
         live.log_metric("train/loss", avg_loss)
         live.log_metric("validation/loss", float(avg_vloss))
 

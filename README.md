@@ -1,20 +1,19 @@
 # License Plate Detection
 
--   [License Plate Detection](#license-plate-detection)
-    -   [Introduction](#introduction)
-    -   [Getting started](#getting-started)
-        -   [Prerequisites](#prerequisites)
-        -   [Installation](#installation)
-    -   [Next tasks](#next-tasks)
-    -   [Models](#models)
-    -   [Resources](#resources)
-    -   [Contributing](#contributing)
-        -   [Prerequisites](#prerequisites-1)
-        -   [Installation](#installation-1)
-            -   [Clone the repository](#clone-the-repository)
-            -   [Install pre-commit](#install-pre-commit)
-            -   [Install Virtualenv](#install-virtualenv)
-        -   [Markdown Linting and Formatting](#markdown-linting-and-formatting)
+- [License Plate Detection](#license-plate-detection)
+  - [Introduction](#introduction)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+  - [Next tasks](#next-tasks)
+  - [Resources](#resources)
+  - [Contributing](#contributing)
+    - [Prerequisites](#prerequisites-1)
+    - [Installation](#installation-1)
+      - [Clone the repository](#clone-the-repository)
+      - [Install pre-commit](#install-pre-commit)
+      - [Install Virtualenv](#install-virtualenv)
+    - [Markdown Linting and Formatting](#markdown-linting-and-formatting)
 
 ## Introduction
 
@@ -24,7 +23,7 @@ TODO
 
 ### Prerequisites
 
--   Python 3.9
+- Python 3.9
 
 ### Installation
 
@@ -32,56 +31,37 @@ TODO
 
 ## Next tasks
 
--   [ ] Use absolute paths
--   [ ] Run on IICT cluster and Kubernetes
--   [ ] Train with Ray
--   [ ] Augment images with random zoom
-
-## Models
-
-```yaml
-img_shape: [1, 84, 84]
-hidden_layers: [128, 64, 32]
-fc_features_in: 32
-```
-
-```yaml
-img_shape: [3, 84, 84]
-hidden_layers: [64, 32]
-fc_features_in: 32
-```
-
-```yaml
-img_shape: [3, 84, 84]
-hidden_layers: [128, 64, 32]
-fc_features_in: 32
-```
+- [ ] Add documentation to code
+- [ ] Add documentation do readme
+- [ ] Train with PyTorch Lightning
+- [ ] Add remove cpu call
+- [ ] Add early stopping
 
 ## Resources
 
--   **Tensorflow implementation**
-    https://pyimagesearch.com/2020/10/05/object-detection-bounding-box-regression-with-keras-tensorflow-and-deep-learning/
+- **Tensorflow implementation**
+  https://pyimagesearch.com/2020/10/05/object-detection-bounding-box-regression-with-keras-tensorflow-and-deep-learning/
 
--   **Dataset**
-    https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
+- **Dataset**
+  https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
 
--   **Training with PyTorch**
-    https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
+- **Training with PyTorch**
+  https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
 
--   **PyTorch Reproducibility**
-    https://pytorch.org/docs/stable/notes/randomness.html
+- **PyTorch Reproducibility**
+  https://pytorch.org/docs/stable/notes/randomness.html
 
--   **PyTorch Optimization**
-    https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
+- **PyTorch Optimization**
+  https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
 
--   **Swiss number plate generator**
-    https://platesmania.com/ch/informer
+- **Swiss number plate generator**
+  https://platesmania.com/ch/informer
 
 ## Contributing
 
 ### Prerequisites
 
--   Python 3.9
+- Python 3.9
 
 ### Installation
 
@@ -112,5 +92,5 @@ pip install --upgrade pip
 
 This repository uses the following VSCode:
 
--   [`spell-right`](https://marketplace.visualstudio.com/items?itemName=ban.spellright) for spell checking markdown files.
--   [`isort`](https://marketplace.visualstudio.com/items?itemName=ms-python.isort) for sorting python imports.
+- [`spell-right`](https://marketplace.visualstudio.com/items?itemName=ban.spellright) for spell checking markdown files.
+- [`isort`](https://marketplace.visualstudio.com/items?itemName=ms-python.isort) for sorting python imports.

@@ -163,6 +163,9 @@ stages:
           - LocalizeModelParams
           - OCRParams
           - OCRModelParams
+    metrics:
+      - ${out_path}/${out_evaluation_folder}/${stack_model_folder}/metrics.json:
+          cache: false
     plots:
       - ${out_path}/${out_evaluation_folder}/${stack_model_folder}/plots/images:
           cache: false

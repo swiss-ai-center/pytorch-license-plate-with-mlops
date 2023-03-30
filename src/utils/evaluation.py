@@ -15,7 +15,7 @@ def live_log_img_pred(
     width: int = 512,
     height: int = 512,
 ) -> None:
-    img = img.detach().numpy().transpose(1, 2, 0)
+    img = img.cpu().numpy().transpose(1, 2, 0)
     img = (img * 255).astype(np.uint8)
     img = cv2.resize(img, (width, height), interpolation=cv2.INTER_LINEAR)
     # add 100px padding to the bottom of the image

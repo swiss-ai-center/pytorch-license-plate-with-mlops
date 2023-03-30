@@ -26,8 +26,10 @@ def main() -> None:
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    max_samples = 10
 
+    model.to(device)
+
+    max_samples = 10
     # We don't need gradients on to do reporting
     model.eval()
 
@@ -43,10 +45,10 @@ def main() -> None:
             for i in range(vinputs.shape[0]):
                 if i >= max_samples:
                     break
-                img = vinputs[i].detach().numpy().transpose(1, 2, 0)
+                img = vinputs[i].cpu().numpy().transpose(1, 2, 0)
                 img = (img * 255).astype(np.uint8).squeeze()
-                bb = vlabels[i].detach().numpy() * img.shape[1]
-                bb_pred = voutputs[i].detach().numpy() * img.shape[1]
+                bb = vlabels[i].cpu().numpy() * img.shape[1]
+                bb_pred = voutputs[i].cpu().numpy() * img.shape[1]
                 img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
                 img = draw_bb(img, bb, color=(255, 255, 255))
                 img = draw_bb(img, bb_pred, color=(0, 255, 0))
