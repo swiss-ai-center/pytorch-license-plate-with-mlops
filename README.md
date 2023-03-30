@@ -32,7 +32,7 @@ TODO
 
 ## Next tasks
 
--   [ ] Add DVC
+-   [ ] Use absolute paths
 -   [ ] Run on IICT cluster and Kubernetes
 -   [ ] Train with Ray
 -   [ ] Augment images with random zoom
@@ -67,6 +67,12 @@ fc_features_in: 32
 
 -   **Training with PyTorch**
     https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
+
+-   **PyTorch Reproducibility**
+    https://pytorch.org/docs/stable/notes/randomness.html
+
+-   **PyTorch Optimization**
+    https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
 
 -   **Swiss number plate generator**
     https://platesmania.com/ch/informer

@@ -4,7 +4,7 @@ import numpy as np
 
 def draw_bb(
     image: np.array, bb: np.array, color: tuple[int, int, int] = (0, 255, 0)
-):
+) -> np.array:
     """
     Draw a bounding box on an image
     Args:

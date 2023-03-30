@@ -5,13 +5,20 @@
 # Environments
 .venv
 
+# Variables
+.env.local
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
 ## Project specific
-data/datasets/
-data/prepared/
+data/test
+out/
+
+src/testing/
 
 ## DVC
 
 # DVC will add new files after this line
+/runs
+/models

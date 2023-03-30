@@ -1,37 +1,168 @@
 stages:
-  prepare:
-    cmd: python src/prepare.py
+  # Localization model
+  prepare_localize:
+    cmd: python3 -m ${src_path}.${localize_model_folder}.prepare
     deps:
-    - ${prepare.dataset_path}
-    - src/prepare.py
+      - ${dataset_path}
+      - ${src_path}/${localize_model_folder}/prepare.py
+      - ${src_path}/generators/swiss_license_plates_generator.py
+      - ${src_path}/datasets/swiss_license_plates_dataset.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/dataset.py
     params:
-    - batch_size
-    - img_shape
-    - prepare.seed
-    - prepare.dataset_path
-    - prepare.dataset_folder
-    - prepare.dataset_metadata_path
-    - prepare.max_images
-    - prepare.train_split
-    - prepare.prepared_path
+      - params.py:
+          - BATCH_SIZE
+          - LocalizeParams
+          - PrepareLocalizeParams
     outs:
-    - ${prepare.prepared_path}
-  train:
-    cmd: python src/train.py
+      - ${prepared_data_path}/${localize_model_folder}
+    plots:
+      - ${out_path}/${out_prepared_folder}/${localize_model_folder}/plots/images:
+          cache: false
+
+  train_localize:
+    cmd: python3 -m ${src_path}.${localize_model_folder}.train
     deps:
-    - ${prepare.prepared_path}
-    - src/train.py
-    - src/models/
+      - ${prepared_data_path}/${localize_model_folder}
+      - ${src_path}/${localize_model_folder}/train.py
+      - ${src_path}/models/cnn_localizer_model.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/model.py
+      - ${src_path}/utils/train.py
     params:
-    - batch_size
-    - img_shape
-    - hidden_layers
-    - fc_features_in
-    - num_classes
-    - dropout
-    - train.seed
-    - train.lr
-    - train.epochs
+      - params.py:
+          - BATCH_SIZE
+          - LocalizeParams
+          - LocalizeModelParams
+          - TrainLocalizeParams
     outs:
-    - ${train.log_path}
-    - ${train.checkpoints_path}
+      - ${out_path}/${out_log_folder}/${localize_model_folder}/tensorboard
+      - ${out_path}/${out_save_folder}/${localize_model_folder}
+    metrics:
+      - ${out_path}/${out_log_folder}/${localize_model_folder}/metrics.json:
+          cache: false
+    plots:
+      - ${out_path}/${out_log_folder}/${localize_model_folder}/plots/metrics:
+          cache: false
+          x: step
+
+  evaluate_localize:
+    cmd: python3 -m ${src_path}.${localize_model_folder}.evaluate
+    deps:
+      - ${out_path}/${out_save_folder}/${localize_model_folder}
+      - ${src_path}/${localize_model_folder}/evaluate.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/model.py
+      - ${src_path}/utils/preview.py
+    params:
+      - params.py:
+          - LocalizeParams
+          - LocalizeModelParams
+    plots:
+      - ${out_path}/${out_evaluation_folder}/${localize_model_folder}/plots/images:
+          cache: false
+
+  # OCR model
+  prepare_ocr:
+    cmd: python3 -m ${src_path}.${ocr_model_folder}.prepare
+    deps:
+      - ${dataset_path}
+      - ${src_path}/${ocr_model_folder}/prepare.py
+      - ${src_path}/generators/swiss_license_plates_generator.py
+      # Note: This is a different dataset than the one used for the localization model
+      - ${src_path}/datasets/swiss_license_plates_dataset.py
+      - ${src_path}/datasets/swiss_license_plates_ocr_dataset.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/dataset.py
+    params:
+      - params.py:
+          - BATCH_SIZE
+          - OCRParams
+          - PrepareOCRParams
+    outs:
+      - ${prepared_data_path}/${ocr_model_folder}
+    plots:
+      - ${out_path}/${out_prepared_folder}/${ocr_model_folder}/plots/images:
+          cache: false
+
+  train_ocr:
+    cmd: python3 -m ${src_path}.${ocr_model_folder}.train
+    deps:
+      - ${prepared_data_path}/${ocr_model_folder}
+      - ${src_path}/${ocr_model_folder}/train.py
+      - ${src_path}/models/cnn_ocr_model.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/model.py
+      - ${src_path}/utils/train.py
+    params:
+      - params.py:
+          - BATCH_SIZE
+          - OCRParams
+          - OCRModelParams
+          - TrainOCRParams
+    outs:
+      - ${out_path}/${out_log_folder}/${ocr_model_folder}/tensorboard
+      - ${out_path}/${out_save_folder}/${ocr_model_folder}
+    metrics:
+      - ${out_path}/${out_log_folder}/${ocr_model_folder}/metrics.json:
+          cache: false
+    plots:
+      - ${out_path}/${out_log_folder}/${ocr_model_folder}/plots/metrics:
+          cache: false
+          x: step
+
+  evaluate_ocr:
+    cmd: python3 -m ${src_path}.${ocr_model_folder}.evaluate
+    deps:
+      - ${out_path}/${out_save_folder}/${ocr_model_folder}
+      - ${src_path}/${ocr_model_folder}/evaluate.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/model.py
+      - ${src_path}/utils/evaluation.py
+    params:
+      - params.py:
+          - OCRParams
+          - OCRModelParams
+    plots:
+      - ${out_path}/${out_evaluation_folder}/${ocr_model_folder}/plots/images:
+          cache: false
+
+  # Evaluate the model stack
+  prepare_stack:
+    cmd: python3 -m ${src_path}.${stack_model_folder}.prepare
+    deps:
+      - ${dataset_path}
+      - ${src_path}/${stack_model_folder}/prepare.py
+      - ${src_path}/generators/swiss_license_plates_generator.py
+      - ${src_path}/datasets/swiss_license_plates_dataset.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/dataset.py
+    params:
+      - params.py:
+          - BATCH_SIZE
+          - LocalizeParams
+          - PrepareOCRParams
+          - PrepareStackParams
+    outs:
+      - ${prepared_data_path}/${stack_model_folder}
+
+  evaluate_stack:
+    cmd: python3 -m ${src_path}.${stack_model_folder}.evaluate
+    deps:
+      - ${prepared_data_path}/${stack_model_folder}
+      - ${out_path}/${out_save_folder}/${localize_model_folder}
+      - ${out_path}/${out_save_folder}/${ocr_model_folder}
+      - ${src_path}/${stack_model_folder}/evaluate.py
+      - ${src_path}/utils/seed.py
+      - ${src_path}/utils/model.py
+      - ${src_path}/utils/evaluation.py
+      - ${src_path}/utils/preview.py
+    params:
+      - params.py:
+          - LocalizeParams
+          - LocalizeModelParams
+          - OCRParams
+          - OCRModelParams
+    plots:
+      - ${out_path}/${out_evaluation_folder}/${stack_model_folder}/plots/images:
+          cache: false
