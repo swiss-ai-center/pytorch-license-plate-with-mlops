@@ -1,7 +1,7 @@
 name: CML
 on: [push]
 jobs:
-  test:
+  train-and-report:
     runs-on: [self-hosted, cml-runner-gpu]
     steps:
       - name: Clone repo
@@ -13,8 +13,8 @@ jobs:
           pip install -r requirements/requirements.txt
       - name: Set up DVC credentials
         run: |
-          dvc remote modify myremote access_key_id ${{ secrets.MINIO_KEY_ID }}
-          dvc remote modify myremote secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
+          dvc remote modify data access_key_id ${{ secrets.MINIO_KEY_ID }}
+          dvc remote modify data secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
       - name: Test CML
         run: |
           dvc pull
