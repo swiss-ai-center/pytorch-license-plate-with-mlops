@@ -1,5 +1,8 @@
 name: CML
-on: [push]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   train-and-report:
