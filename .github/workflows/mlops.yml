@@ -26,5 +26,16 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo '![](./out/prepared/localize/plots/images/sample_0.png "Localize Data Sample")' >> report.md
+          # Compare parameters to main branch
+          echo "# Params workflow vs. main" >> report.md
+          echo >> report.md
+          dvc params diff main --show-md >> report.md
+          echo >> report.md
+
+          # Compare metrics to main branch
+          echo "# Metrics workflow vs. main" >> report.md
+          echo >> report.md
+          dvc metrics diff main --show-md >> report.md
+          echo >> report.md
+
           cml comment create report.md
