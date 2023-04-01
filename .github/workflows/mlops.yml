@@ -15,9 +15,11 @@ jobs:
         run: |
           dvc remote modify data access_key_id ${{ secrets.MINIO_KEY_ID }}
           dvc remote modify data secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
-      - name: Test CML
+      - name: Run DVC pipeline
+        run: dvc pull
+      - name: Create CML report
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dvc pull
-
           echo '![](./out/prepared/localize/plots/images/smaple_0.png "Localize Data Sample")' >> report.md
           cml comment create report.md
