@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, Tuple
 
 import cv2
 import numpy as np
@@ -17,7 +17,7 @@ class SwissLicensePlatesDataset(Dataset):
     def __init__(
         self,
         template_path: str,
-        img_shape: tuple[int, int, int],
+        img_shape: Tuple[int, int, int],
         img_transform: transforms.Compose,
         max_images: Optional[int],
         is_eval: bool = False,
@@ -59,7 +59,7 @@ class SwissLicensePlatesDataset(Dataset):
     def __len__(self):
         return self._max_images
 
-    def __getitem__(self, idx) -> tuple[Tensor, Tensor, str, str]:
+    def __getitem__(self, idx) -> Tuple[Tensor, Tensor, str, str]:
         img_plate, number, canton = self._generator.generate_one_random()
         img_plate = np.array(
             transforms.Compose(

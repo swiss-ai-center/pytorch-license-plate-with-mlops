@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Tuple, Union
 
 from torch import Tensor, nn
 
@@ -10,24 +10,24 @@ class CNNLocaliserModel(AbstractModel):
 
     def __init__(
         self,
-        img_shape: tuple[int, int, int],
-        conv_layers: tuple[Union[int, str]],
-        avgpool_size: tuple[int, int],
-        hidden_layers: tuple[int],
+        img_shape: Tuple[int, int, int],
+        conv_layers: Tuple[Union[int, str]],
+        avgpool_size: Tuple[int, int],
+        hidden_layers: Tuple[int],
         dropout: float,
     ):
         """
         Initialize the model.
 
         Args:
-            img_shape (tuple[int, int, int]): Image shape
+            img_shape (Tuple[int, int, int]): Image shape
                 (channels, height, width)
-            conv_layers (tuple[int | str]): List of convolutional layers. Each
+            conv_layers (Tuple[int | str]): List of convolutional layers. Each
                 element can be an integer (number of features) or a string
                 ("M" for maxpooling).
-            avgpool_size (tuple[int, int]): Size of the average pooling layer.
+            avgpool_size (Tuple[int, int]): Size of the average pooling layer.
                 It should be a tuple of two integers.
-            hidden_layers (tuple[int]): List of hidden layers where each
+            hidden_layers (Tuple[int]): List of hidden layers where each
                 element is the number of features.
             dropout (float): Dropout rate.
         """

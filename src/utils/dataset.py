@@ -1,5 +1,5 @@
 import os
-from typing import Union
+from typing import Tuple, Union
 
 import numpy as np
 import torch
@@ -13,7 +13,7 @@ from src.utils.seed import seed_worker
 
 def split_dataset(
     dataset: Dataset, train_split: float
-) -> tuple[DataLoader, DataLoader]:
+) -> Tuple[DataLoader, DataLoader]:
     train_size = round(train_split * len(dataset))
     val_size = len(dataset) - train_size
     return random_split(dataset, [train_size, val_size])
@@ -55,7 +55,7 @@ def save_dataloader(data_loader: DataLoader, path: str, filename: str) -> None:
 
 
 def print_batch_features(
-    minibatch: Union[Tensor, list], labels: tuple[str]
+    minibatch: Union[Tensor, list], labels: Tuple[str]
 ) -> None:
     for batch, label in zip(minibatch, labels):
         print(f"{label} batch shape: {batch.size()}")

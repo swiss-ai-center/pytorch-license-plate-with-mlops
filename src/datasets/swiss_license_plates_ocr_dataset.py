@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import numpy as np
 from PIL import Image
 from torch import LongTensor, Tensor
@@ -11,7 +13,7 @@ from src.utils import linalg
 
 class SwissLicensePlateOCRDataset(SwissLicensePlatesDataset):
     def __init__(
-        self, img_size_before_crop: tuple[int, int], **kwargs
+        self, img_size_before_crop: Tuple[int, int], **kwargs
     ) -> None:
         self._crop_shape = kwargs["img_shape"]
 
@@ -24,7 +26,7 @@ class SwissLicensePlateOCRDataset(SwissLicensePlatesDataset):
         self._cantons = list(Canton)
         self._plate_transform = transforms.ToTensor()
 
-    def __getitem__(self, index: int) -> tuple[Tensor, Tensor]:
+    def __getitem__(self, index: int) -> Tuple[Tensor, Tensor]:
         plate, bb, number, canton = super().__getitem__(index)
         plate = plate.numpy().transpose(1, 2, 0) * 255
         bb = bb.numpy()

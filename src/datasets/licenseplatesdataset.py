@@ -1,5 +1,5 @@
 import os
-from typing import Union
+from typing import List, Union
 
 import numpy as np
 from PIL import Image
@@ -15,7 +15,7 @@ class LicensePlatesDataset(Dataset):
         dataset_path: str,
         dataset_folder: str,
         dataset_metadata_path: str,
-        img_shape: list[int, int, int],
+        img_shape: List[int, int, int],
         img_transform: transforms.Compose,
         max_images: Union[int, None],
         skiprows: int = 0,

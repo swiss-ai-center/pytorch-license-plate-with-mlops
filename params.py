@@ -128,7 +128,7 @@ GlobParamsKeysType = typing.Literal[
     "prepared_data_path",
 ]
 
-GlobParamsType = dict[
+GlobParamsType = typing.Dict[
     GlobParamsKeysType,
     str,
 ]

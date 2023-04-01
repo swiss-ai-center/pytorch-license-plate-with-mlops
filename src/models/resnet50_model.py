@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from torch import Tensor, nn
 from torchvision import models
 
@@ -5,8 +7,8 @@ from torchvision import models
 class ResMNet50Model(nn.Module):
     def __init__(
         self,
-        img_shape: tuple[int, int, int],
-        hidden_layers: tuple[int],
+        img_shape: Tuple[int, int, int],
+        hidden_layers: Tuple[int],
         fc_features_in: int,
         num_classes: int,
         dropout: float,

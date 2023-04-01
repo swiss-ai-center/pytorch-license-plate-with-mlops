@@ -1,6 +1,7 @@
 import os
 import random
 from enum import Enum
+from typing import Dict, List, Tuple
 
 import cv2
 import numpy as np
@@ -255,8 +256,8 @@ class SwissLicensePlatesGenerator:
 
     def generate_one_random(
         self,
-        number_distribution: dict[int, float] = None,
-    ) -> tuple[np.ndarray, str, Canton]:
+        number_distribution: Dict[int, float] = None,
+    ) -> Tuple[np.ndarray, str, Canton]:
         """
         Generate a random Swiss license plate
         Args:
@@ -289,8 +290,8 @@ class SwissLicensePlatesGenerator:
     def generate_random(
         self,
         count: int,
-        number_distribution: dict[int, float] = None,
-    ) -> list[np.ndarray]:
+        number_distribution: Dict[int, float] = None,
+    ) -> List[np.ndarray]:
         """
         Generate multiple random Swiss license plates
         Args:
@@ -313,7 +314,7 @@ class SwissLicensePlatesGenerator:
         stretch: bool = True,
         shear: bool = True,
         perspective: bool = True,
-    ) -> tuple[np.ndarray, np.ndarray]:
+    ) -> Tuple[np.ndarray, np.ndarray]:
         mask = np.zeros((width, height, 3), dtype=np.uint8)
         transform_mat = np.eye(3, dtype=np.float32)
         plate += 1

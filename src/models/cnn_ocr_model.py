@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Tuple, Union
 
 import torch
 from torch import Tensor, nn
@@ -12,13 +12,13 @@ class CNNOCRModel(AbstractModel):
 
     def __init__(
         self,
-        img_shape: tuple[int, int, int],
-        conv_layers: tuple[Union[int, str]],
-        avgpool_size: tuple[int, int],
+        img_shape: Tuple[int, int, int],
+        conv_layers: Tuple[Union[int, str]],
+        avgpool_size: Tuple[int, int],
         gru_hidden_size: int,
         gru_num_layers: int,
         gru_num_classes: int,
-        rnn_hidden_layers: tuple[int],
+        rnn_hidden_layers: Tuple[int],
         rnn_num_classes: int,
         rnn_dropout: float,
     ):
@@ -26,19 +26,19 @@ class CNNOCRModel(AbstractModel):
         Initialize the model.
 
         Args:
-            img_shape (tuple[int, int, int]): Image shape
+            img_shape (Tuple[int, int, int]): Image shape
                 (channels, height, width)
-            conv_layers (tuple[int | str]): List of convolutional layers. Each
+            conv_layers (Tuple[int | str]): List of convolutional layers. Each
                 element can be an integer (number of features) or a string
                 ("M" for maxpooling).
-            avgpool_size (tuple[int, int]): Size of the average pooling layer.
+            avgpool_size (Tuple[int, int]): Size of the average pooling layer.
                 It should be a tuple of two integers.
             gru_hidden_size (int): Number of features in the hidden state of
                 the GRU.
             gru_num_layers (int): Number of recurrent layers.
             gru_num_classes (int): Number of classes for the text/digit
                 recognition including the blank class. (c.f. CTC loss)
-            rnn_hidden_layers (tuple[int]): List of hidden layers for the
+            rnn_hidden_layers (Tuple[int]): List of hidden layers for the
                 RNN caterigorical classification.
             rnn_num_classes (int): Number of classes for an additional
                 classification layer.
@@ -116,7 +116,7 @@ class CNNOCRModel(AbstractModel):
         self.softmax_out = nn.Softmax(dim=-1)
         self.loss_fn_ce = nn.CrossEntropyLoss()
 
-    def forward(self, x: Tensor) -> tuple[Tensor, Tensor]:
+    def forward(self, x: Tensor) -> Tuple[Tensor, Tensor]:
         """Forward pass."""
         # CNN layers
         x = self.features(x)
@@ -139,7 +139,7 @@ class CNNOCRModel(AbstractModel):
         )
         return (x_gru, x_rnn)
 
-    def loss(self, y_pred: tuple[Tensor, Tensor], y_true: Tensor) -> Tensor:
+    def loss(self, y_pred: Tuple[Tensor, Tensor], y_true: Tensor) -> Tensor:
         """Compute the loss."""
         # Permute the dimensions to have the input length as the first
         # dimension
