@@ -1,3 +1,5 @@
+from typing import Optional
+
 import cv2
 import numpy as np
 
@@ -26,7 +28,7 @@ def get_grid(w, h, homogenous=False) -> np.ndarray:
 
 
 def apply_affine_transform_coords(
-    coords: np.ndarray, A: np.ndarray, origin: tuple | None = None
+    coords: np.ndarray, A: np.ndarray, origin: Optional[tuple] = None
 ) -> np.ndarray:
     """
     Apply affine transformation to a set of points
@@ -75,7 +77,7 @@ def apply_affine_transform_image(
     img: np.ndarray,
     A: np.ndarray,
     center: bool = False,
-    fill: np.ndarray | None = None,
+    fill: Optional[np.ndarray] = None,
     **kwargs
 ) -> np.ndarray:
     """

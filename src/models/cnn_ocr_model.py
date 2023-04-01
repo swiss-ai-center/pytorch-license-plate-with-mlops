@@ -1,3 +1,5 @@
+from typing import Union
+
 import torch
 from torch import Tensor, nn
 
@@ -11,7 +13,7 @@ class CNNOCRModel(AbstractModel):
     def __init__(
         self,
         img_shape: tuple[int, int, int],
-        conv_layers: tuple[int | str],
+        conv_layers: tuple[Union[int, str]],
         avgpool_size: tuple[int, int],
         gru_hidden_size: int,
         gru_num_layers: int,

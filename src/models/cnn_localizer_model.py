@@ -1,3 +1,5 @@
+from typing import Union
+
 from torch import Tensor, nn
 
 from src.models.abstract_model import AbstractModel
@@ -9,7 +11,7 @@ class CNNLocaliserModel(AbstractModel):
     def __init__(
         self,
         img_shape: tuple[int, int, int],
-        conv_layers: tuple[int | str],
+        conv_layers: tuple[Union[int, str]],
         avgpool_size: tuple[int, int],
         hidden_layers: tuple[int],
         dropout: float,

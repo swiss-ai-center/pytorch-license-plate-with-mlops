@@ -1,4 +1,5 @@
 import os
+from typing import Union
 
 import numpy as np
 import torch
@@ -53,7 +54,9 @@ def save_dataloader(data_loader: DataLoader, path: str, filename: str) -> None:
     torch.save(data_loader, os.path.join(path, filename))
 
 
-def print_batch_features(minibatch: Tensor | list, labels: tuple[str]) -> None:
+def print_batch_features(
+    minibatch: Union[Tensor, list], labels: tuple[str]
+) -> None:
     for batch, label in zip(minibatch, labels):
         print(f"{label} batch shape: {batch.size()}")
         print(f"{label} batch sample:")
@@ -65,7 +68,7 @@ def print_batch_features(minibatch: Tensor | list, labels: tuple[str]) -> None:
 
 
 def save_samples(
-    minibatch: Tensor | list,
+    minibatch: Union[Tensor, list],
     path: str,
     n_samples: int = 5,
 ) -> None:
