@@ -1,5 +1,6 @@
 name: CML
 on: [push]
+
 jobs:
   train-and-report:
     runs-on: [self-hosted, cml-runner-gpu]
@@ -16,10 +17,11 @@ jobs:
           dvc remote modify data access_key_id ${{ secrets.MINIO_KEY_ID }}
           dvc remote modify data secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
       - name: Run DVC pipeline
-        run: dvc pull
+        run: |
+          dvc pull
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo '![](./out/prepared/localize/plots/images/smaple_0.png "Localize Data Sample")' >> report.md
+          echo '![](./out/prepared/localize/plots/images/sample_0.png "Localize Data Sample")' >> report.md
           cml comment create report.md

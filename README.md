@@ -9,10 +9,10 @@
   - [Run the Pipeline on a Self-Hosted Runner with CI/CD](#run-the-pipeline-on-a-self-hosted-runner-with-cicd)
     - [Manual Setup](#manual-setup)
     - [With Docker](#with-docker)
+      - [Build and Run the Docker image](#build-and-run-the-docker-image)
     - [With Kubernetes](#with-kubernetes)
-      - [Build the Docker image](#build-the-docker-image)
-        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
         - [Create a secret](#create-a-secret)
+        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
   - [Next tasks](#next-tasks)
   - [Contributing](#contributing)
     - [Prerequisites](#prerequisites-1)
@@ -49,23 +49,13 @@ You can find below three different ways of setting up the self-hosted runner wit
 
 ### With Docker
 
+#### Build and Run the Docker image
+
+```sh
+docker-compose up --build
+```
+
 ### With Kubernetes
-
-#### Build the Docker image
-
-Run the following command to build the Docker image:
-
-```sh
-docker build -t mlops/cml-runner ./docker
-```
-
-The `docker build` command creates a Docker image named `mlops/cml-runner` from the `Dockerfile` in the `./docker` directory.
-
-##### Create the Kubernetes Pod
-
-```sh
-kubectl apply -f kubernetes/cml-runner.yml
-```
 
 ##### Create a secret
 
@@ -83,6 +73,14 @@ This command does the following:
 - Uses the `unset` command to unset the `ACCESS_TOKEN` environment variable.
 
 > Note: Replace `<personal access token>` with your GitHub personal access token.
+
+##### Create the Kubernetes Pod
+
+```sh
+kubectl apply -f kubernetes/cml-runner.yml
+```
+
+This command create a Kubernetes Pod named `cml-runner` with the label `cml-runner-gpu`.
 
 ## Next tasks
 
