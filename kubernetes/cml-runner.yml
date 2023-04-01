@@ -19,11 +19,13 @@ spec:
           cpu: "50"
           memory: "5Gi"
           nvidia.com/gpu: 1
-      command: ["cml", "runner", "launch"]
+      command: ["/bin/bash", "-c"]
       args: [
-          '--repo="$(REPOSITORY_URL)"',
-          '--token="$(PERSONAL_ACCESS_TOKEN)"',
-          "--labels=cml-runner-gpu",
-          "--idle-timeout=86400", # 24 hours
+          "apt-get update && \
+          apt-get install -y ffmpeg libsm6 libxext6 && \
+          cml runner launch \
+          --repo='$(REPOSITORY_URL)' \
+          --token='$(PERSONAL_ACCESS_TOKEN)' \
+          --labels=cml-runner-gpu --idle-timeout=86400",
         ]
   restartPolicy: Never
