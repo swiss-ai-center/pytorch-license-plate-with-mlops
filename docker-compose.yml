@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  cml-runner:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      REPOSITORY_URL: ${REPOSITORY_URL}
+      PERSONAL_ACCESS_TOKEN: ${PERSONAL_ACCESS_TOKEN}

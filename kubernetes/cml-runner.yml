@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cml-runner
+spec:
+  containers:
+    - name: cml-runner
+      image: iterativeai/cml:0-dvc2-base1-gpu
+      env:
+        - name: REPOSITORY_URL
+          value: "https://github.com/leonardcser/pytorch-mlops-license-plate.git"
+        - name: PERSONAL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: gh-pat-secret
+              key: personal_access_token
+      resources:
+        limits:
+          cpu: "50"
+          memory: "5Gi"
+          nvidia.com/gpu: 1
+      command: ["cml", "runner", "launch"]
+      args: [
+          '--repo="$(REPOSITORY_URL)"',
+          '--token="$(PERSONAL_ACCESS_TOKEN)"',
+          "--labels=cml-runner-gpu",
+          "--idle-timeout=86400", # 24 hours
+        ]
+  restartPolicy: Never

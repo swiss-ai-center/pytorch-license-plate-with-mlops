@@ -5,8 +5,15 @@
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+  - [Run the Pipeline Locally](#run-the-pipeline-locally)
+  - [Run the Pipeline on a Self-Hosted Runner with CI/CD](#run-the-pipeline-on-a-self-hosted-runner-with-cicd)
+    - [Manual Setup](#manual-setup)
+    - [With Docker](#with-docker)
+    - [With Kubernetes](#with-kubernetes)
+      - [Build the Docker image](#build-the-docker-image)
+        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
+        - [Create a secret](#create-a-secret)
   - [Next tasks](#next-tasks)
-  - [Resources](#resources)
   - [Contributing](#contributing)
     - [Prerequisites](#prerequisites-1)
     - [Installation](#installation-1)
@@ -14,6 +21,7 @@
       - [Install pre-commit](#install-pre-commit)
       - [Install Virtualenv](#install-virtualenv)
     - [Markdown Linting and Formatting](#markdown-linting-and-formatting)
+  - [Resources](#resources)
 
 ## Introduction
 
@@ -29,6 +37,53 @@ TODO
 
 TODO
 
+## Run the Pipeline Locally
+
+## Run the Pipeline on a Self-Hosted Runner with CI/CD
+
+In this section, you will learn how to run the pipeline on a self-hosted runner with GitHub Actions.
+
+You can find below three different ways of setting up the self-hosted runner with GitHub Actions.
+
+### Manual Setup
+
+### With Docker
+
+### With Kubernetes
+
+#### Build the Docker image
+
+Run the following command to build the Docker image:
+
+```sh
+docker build -t mlops/cml-runner ./docker
+```
+
+The `docker build` command creates a Docker image named `mlops/cml-runner` from the `Dockerfile` in the `./docker` directory.
+
+##### Create the Kubernetes Pod
+
+```sh
+kubectl apply -f kubernetes/cml-runner.yml
+```
+
+##### Create a secret
+
+```sh
+echo -n "Enter the personal access token: " &&
+  read -s ACCESS_TOKEN && \
+    kubectl create secret generic gh-pat-secret --from-literal=personal_access_token=$ACCESS_TOKEN
+  unset ACCESS_TOKEN
+```
+
+This command does the following:
+
+- Uses the `read` command to read the personal access token from the terminal so that it is not stored in the shell history.
+- Uses the `kubectl create secret` command to create a secret named `gh-pat-secret` with the personal access token.
+- Uses the `unset` command to unset the `ACCESS_TOKEN` environment variable.
+
+> Note: Replace `<personal access token>` with your GitHub personal access token.
+
 ## Next tasks
 
 - [ ] Add documentation to code
@@ -36,26 +91,6 @@ TODO
 - [ ] Train with PyTorch Lightning
 - [ ] Add remove cpu call
 - [ ] Add early stopping
-
-## Resources
-
-- **Tensorflow implementation**
-  https://pyimagesearch.com/2020/10/05/object-detection-bounding-box-regression-with-keras-tensorflow-and-deep-learning/
-
-- **Dataset**
-  https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
-
-- **Training with PyTorch**
-  https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
-
-- **PyTorch Reproducibility**
-  https://pytorch.org/docs/stable/notes/randomness.html
-
-- **PyTorch Optimization**
-  https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
-
-- **Swiss number plate generator**
-  https://platesmania.com/ch/informer
 
 ## Contributing
 
@@ -94,3 +129,23 @@ This repository uses the following VSCode:
 
 - [`spell-right`](https://marketplace.visualstudio.com/items?itemName=ban.spellright) for spell checking markdown files.
 - [`isort`](https://marketplace.visualstudio.com/items?itemName=ms-python.isort) for sorting python imports.
+
+## Resources
+
+- **Tensorflow implementation**
+  https://pyimagesearch.com/2020/10/05/object-detection-bounding-box-regression-with-keras-tensorflow-and-deep-learning/
+
+- **Dataset**
+  https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
+
+- **Training with PyTorch**
+  https://pytorch.org/tutorials/beginner/introyt/trainingyt.html
+
+- **PyTorch Reproducibility**
+  https://pytorch.org/docs/stable/notes/randomness.html
+
+- **PyTorch Optimization**
+  https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
+
+- **Swiss number plate generator**
+  https://platesmania.com/ch/informer
