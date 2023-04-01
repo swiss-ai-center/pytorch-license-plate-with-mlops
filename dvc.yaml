@@ -37,6 +37,7 @@ stages:
           - TrainLocalizeParams
     outs:
       - ${out_path}/${out_log_folder}/${localize_model_folder}/tensorboard
+      - ${out_path}/${out_checkpoint_folder}/${localize_model_folder}
       - ${out_path}/${out_save_folder}/${localize_model_folder}
     metrics:
       - ${out_path}/${out_log_folder}/${localize_model_folder}/metrics.json:
@@ -102,6 +103,7 @@ stages:
           - TrainOCRParams
     outs:
       - ${out_path}/${out_log_folder}/${ocr_model_folder}/tensorboard
+      - ${out_path}/${out_checkpoint_folder}/${ocr_model_folder}
       - ${out_path}/${out_save_folder}/${ocr_model_folder}
     metrics:
       - ${out_path}/${out_log_folder}/${ocr_model_folder}/metrics.json:
