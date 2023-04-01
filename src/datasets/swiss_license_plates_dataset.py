@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 import cv2
 import numpy as np
@@ -18,7 +19,7 @@ class SwissLicensePlatesDataset(Dataset):
         template_path: str,
         img_shape: tuple[int, int, int],
         img_transform: transforms.Compose,
-        max_images: int | None,
+        max_images: Optional[int],
         is_eval: bool = False,
     ):
         """
