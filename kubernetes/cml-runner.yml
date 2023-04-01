@@ -20,6 +20,7 @@ spec:
           memory: "5Gi"
           nvidia.com/gpu: 1
       command: ["/bin/bash", "-c"]
+      # Install dependencies for cv2 and start the cml runner
       args: [
           "apt-get update && \
           apt-get install -y ffmpeg libsm6 libxext6 && \

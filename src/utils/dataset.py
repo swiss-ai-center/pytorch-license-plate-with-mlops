@@ -29,7 +29,7 @@ def get_data_loader(
     multiprocessing_args = {}
     if multiprocessing:
         multiprocessing_args = {
-            "num_workers": 2,
+            "num_workers": 8,
             "pin_memory": True,
         }
 
