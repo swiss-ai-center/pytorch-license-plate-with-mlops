@@ -42,9 +42,10 @@ def main() -> None:
             vlabels = vlabels.to(device)
 
             true_number_idxs, true_canton_idxs = (
-                vlabels[:, :-2],
+                vlabels[:, :-1],
                 vlabels[:, -1],
             )
+            true_number_idxs = true_number_idxs.cpu().numpy().astype(int)
             pred_number, pred_canton = model(vinputs)
 
             # Decode the prediction index
@@ -56,9 +57,7 @@ def main() -> None:
                 number = "".join(
                     [
                         str(d)
-                        for d, _ in groupby(
-                            true_number_idxs[i].cpu().numpy().astype(int)
-                        )
+                        for d in true_number_idxs[i]
                         if d != params.OCRParams.GRU_BLANK_CLASS
                     ]
                 )

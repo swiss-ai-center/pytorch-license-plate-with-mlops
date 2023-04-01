@@ -10,13 +10,15 @@ model_registry = {
         params.LocalizeModelParams.HIDDEN_LAYERS,
         params.LocalizeModelParams.DROPOUT,
     ),
-    "plate_ocr_v1": CNNOCRModel(
+    "plate_ocr_v2": CNNOCRModel(
         params.OCRParams.IMG_SHAPE,
         params.OCRModelParams.CONV_LAYERS,
-        params.OCRModelParams.AVGPOOL_SIZE,
+        params.OCRModelParams.GRU_AVGPOOL_SIZE,
         params.OCRModelParams.GRU_HIDDEN_SIZE,
         params.OCRModelParams.GRU_NUM_LAYERS,
         params.OCRParams.GRU_NUM_CLASSES,
+        params.OCRModelParams.GRU_DROPOUT,
+        params.OCRModelParams.RNN_AVGPOOL_SIZE,
         params.OCRModelParams.RNN_HIDDEN_LAYERS,
         params.OCRParams.RNN_NUM_CLASSES,
         params.OCRModelParams.RNN_DROPOUT,

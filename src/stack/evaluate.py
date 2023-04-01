@@ -1,5 +1,6 @@
 import os
 from itertools import groupby
+import cv2
 
 import torch
 from dvclive import Live
@@ -10,6 +11,7 @@ import src.utils.model as model_utils
 from src.generators.swiss_license_plates_generator import Canton
 from src.models import model_registry
 from src.utils import evaluation as evaluation_utils
+from src.utils.preview import draw_bb
 from src.utils.seed import set_seed
 
 
@@ -61,7 +63,7 @@ def main() -> None:
 
                 # Convert the bounding box
                 bb = bb.cpu().numpy()
-                bb *= params.LocalizeParams.IMG_SHAPE[1]
+                bb *= params.PrepareOCRParams.IMG_SIZE[0]
                 bb = bb.round().astype(int)
 
                 # Crop the image to the bounding box
@@ -70,9 +72,15 @@ def main() -> None:
                 )
                 for j in range(vinputs.shape[0]):
                     bb[j] = [1 if x == 0 else x for x in bb[j]]
-                    # PyTorch transforms expect (cy, cx, h, w)
+                    # PyTorch crop transforms expects (y, x, h, w)
+                    cx = bb[j][0]
+                    cy = bb[j][1]
+                    w = bb[j][2]
+                    h = bb[j][3]
+                    x = round(cx - w / 2)
+                    y = round(cy - h / 2)
                     cropped = transforms.functional.crop(
-                        vinputs[j], bb[j][1], bb[j][0], bb[j][3], bb[j][2]
+                        vinputs[j], y, x, h, w
                     )
                     scaled = transforms.functional.resize(
                         cropped,
@@ -94,7 +102,7 @@ def main() -> None:
                 _, max_number_index = torch.max(pred_number, dim=2)
                 _, max_canton_index = torch.max(pred_canton, dim=1)
 
-                for j in range(max_number_index.shape[0]):
+                for j in range(vinputs[j].shape[0]): # in range of the batch size
                     num_raw_prediction = list(
                         max_number_index[j].cpu().numpy()
                     )
