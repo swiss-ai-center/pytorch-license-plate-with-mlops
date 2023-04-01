@@ -84,6 +84,7 @@ This command create a Kubernetes Pod named `cml-runner` with the label `cml-runn
 
 ## Next tasks
 
+- [ ] Pre-generate dataset instead of generating it on the fly
 - [ ] Add documentation to code
 - [ ] Add documentation do readme
 - [ ] Train with PyTorch Lightning

@@ -41,6 +41,7 @@ def get_data_loader(
         **multiprocessing_args,
         **kwargs,
         worker_init_fn=seed_worker,
+        drop_last=True,
         # generator=g,
     )
 

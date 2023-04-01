@@ -18,18 +18,18 @@ class LocalizeParams:
     IMG_SHAPE = (1, 84, 84)
 
 
+class PrepareLocalizeParams:
+    SEED = 25_03_2023
+    MAX_IMAGES = 5_000
+    TRAIN_SPLIT = 0.8
+
+
 class LocalizeModelParams:
     MODEL_NAME = "plate_localizer_v3"
     CONV_LAYERS = (64, "M", 128, "M", 256, "M", 512, "M")
     AVGPOOL_SIZE = (5, 5)
     HIDDEN_LAYERS = (128, 256)
     DROPOUT = 0.25
-
-
-class PrepareLocalizeParams:
-    SEED = 25_03_2023
-    MAX_IMAGES = 5_000
-    TRAIN_SPLIT = 0.8
 
 
 class TrainLocalizeParams:
@@ -53,6 +53,14 @@ class OCRParams:
     RNN_NUM_CLASSES = len(Canton)  # not for dvc.yaml
 
 
+class PrepareOCRParams:
+    SEED = 25_03_2023
+    MAX_IMAGES = 5_000
+    TRAIN_SPLIT = 0.8
+    # the size of the image before cropping
+    IMG_SIZE = (256, 256)
+
+
 class OCRModelParams:
     MODEL_NAME = "plate_ocr_v1"
     CONV_LAYERS = (64, "M", 128, "M", 256, "M", 256, "M")
@@ -63,18 +71,10 @@ class OCRModelParams:
     GRU_NUM_LAYERS = 2
 
 
-class PrepareOCRParams:
-    SEED = 25_03_2023
-    MAX_IMAGES = 5_000
-    TRAIN_SPLIT = 0.8
-    # the size of the image before cropping
-    IMG_SIZE = (256, 256)
-
-
 class TrainOCRParams:
     SEED = 25_03_2023
     LR = 0.001
-    EPOCHS = 10
+    EPOCHS = 5
 
 
 class EvaluateOCRParams:
