@@ -20,7 +20,7 @@ class LocalizeParams:
 
 class PrepareLocalizeParams:
     SEED = 25_03_2023
-    MAX_IMAGES = 50_000
+    MAX_IMAGES = 100_000
     TRAIN_SPLIT = 0.8
 
 
@@ -29,13 +29,13 @@ class LocalizeModelParams:
     CONV_LAYERS = (64, "M", 128, "M", 256, "M", 512, "M")
     AVGPOOL_SIZE = (5, 5)
     HIDDEN_LAYERS = (512, 512)
-    DROPOUT = 0.25
+    DROPOUT = 0.4
 
 
 class TrainLocalizeParams:
     SEED = 25_03_2023
     LR = 0.001
-    EPOCHS = 5
+    EPOCHS = 3
 
 
 class EvaluateLocalizeParams:
@@ -55,7 +55,7 @@ class OCRParams:
 
 class PrepareOCRParams:
     SEED = 25_03_2023
-    MAX_IMAGES = 75_000
+    MAX_IMAGES = 250_000
     TRAIN_SPLIT = 0.8
     # the size of the image before cropping
     IMG_SIZE = (256, 256)
@@ -65,16 +65,16 @@ class OCRModelParams:
     MODEL_NAME = "plate_ocr_v2"
     CONV_LAYERS = (64, "M", 128, "M", 256, "M", 256, "M")
 
-    GRU_AVGPOOL_SIZE = (15, 15)
-    GRU_HIDDEN_SIZE = 256
+    GRU_AVGPOOL_SIZE = (18, 18)
+    GRU_HIDDEN_SIZE = 384
     GRU_NUM_LAYERS = 2
-    GRU_DROPOUT = 0.4
+    GRU_DROPOUT = 0.5
 
 
 class TrainOCRParams:
     SEED = 25_03_2023
-    LR = 0.0005
-    EPOCHS = 5
+    LR = 0.00025
+    EPOCHS = 2
 
 
 class EvaluateOCRParams:
