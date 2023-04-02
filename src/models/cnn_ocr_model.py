@@ -19,10 +19,6 @@ class CNNOCRModel(AbstractModel):
         gru_num_layers: int,
         gru_num_classes: int,
         gru_dropout: float,
-        rnn_avgpool_size: Tuple[int, int],
-        rnn_hidden_layers: Tuple[int],
-        rnn_num_classes: int,
-        rnn_dropout: float,
     ):
         """
         Initialize the model.
@@ -33,21 +29,14 @@ class CNNOCRModel(AbstractModel):
             conv_layers (Tuple[int | str]): List of convolutional layers. Each
                 element can be an integer (number of features) or a string
                 ("M" for maxpooling).
-            gru_avgpool_size (Tuple[int, int]): Size of the average pooling layer.
-                It should be a tuple of two integers.
+            gru_avgpool_size (Tuple[int, int]): Size of the average pooling
+                layer. It should be a tuple of two integers.
             gru_hidden_size (int): Number of features in the hidden state of
                 the GRU.
             gru_num_layers (int): Number of recurrent layers.
             gru_num_classes (int): Number of classes for the text/digit
                 recognition including the blank class. (c.f. CTC loss)
             gru_dropout (float): Dropout rate for the GRU layer.
-            rnn_avgpool_size (Tuple[int, int]): Size of the average pooling layer.
-                It should be a tuple of two integers.
-            rnn_hidden_layers (Tuple[int]): List of hidden layers for the
-                RNN caterigorical classification.
-            rnn_num_classes (int): Number of classes for an additional
-                classification layer.
-            rnn_dropout (float): Dropout rate for the RNN.
         """
         super(CNNOCRModel, self).__init__()
 
@@ -69,7 +58,7 @@ class CNNOCRModel(AbstractModel):
 
         self.features = nn.Sequential(*self.features_layers_conv)
         self.gru_avgpool = nn.AdaptiveAvgPool2d(gru_avgpool_size)
-        self.rnn_avgpool = nn.AdaptiveAvgPool2d(rnn_avgpool_size)
+        # self.rnn_avgpool = nn.AdaptiveAvgPool2d(rnn_avgpool_size)
 
         # GRU layer
         # https://pytorch.org/docs/stable/generated/torch.nn.GRU.html
@@ -95,41 +84,10 @@ class CNNOCRModel(AbstractModel):
             zero_infinity=True,
         )
 
-        # RNN layers
-        self.flatten = nn.Flatten(start_dim=1)
-        self.hidden_rnn = nn.Sequential()
-        last_layer_features_rnn = (
-            self.features_layers_conv[-3].out_channels
-            * self.rnn_avgpool.output_size[0]
-            * self.rnn_avgpool.output_size[1]
-        )
-        for i, layer_features in enumerate(rnn_hidden_layers):
-            self.hidden_rnn.add_module(
-                str(i),
-                nn.Linear(last_layer_features_rnn, layer_features),
-            )
-            self.hidden_rnn.add_module(str(i + 1), nn.ReLU(inplace=True))
-            self.hidden_rnn.add_module(
-                str(i + 2), nn.Dropout(rnn_dropout, inplace=False)
-            )
-
-            last_layer_features_rnn = layer_features
-
-        self.out_fc_rnn = nn.Linear(last_layer_features_rnn, rnn_num_classes)
-        self.softmax_out = nn.Softmax(dim=-1)
-        self.loss_fn_ce = nn.CrossEntropyLoss()
-
-    def forward(self, x: Tensor) -> Tuple[Tensor, Tensor]:
+    def forward(self, x: Tensor) -> Tensor:
         """Forward pass."""
         # CNN layers
         x = self.features(x)
-
-        # RNN addtionnal classification
-        x_rnn = self.rnn_avgpool(x)
-        x_rnn = self.flatten(x_rnn)
-        x_rnn = self.hidden_rnn(x_rnn)
-        x_rnn = self.out_fc_rnn(x_rnn)
-        x_rnn = self.softmax_out(x_rnn)
 
         # GRU text/digit recognition
         x_gru = self.gru_avgpool(x)
@@ -143,35 +101,27 @@ class CNNOCRModel(AbstractModel):
                 for i in range(x_gru.shape[0])
             ]
         )
-        return (x_gru, x_rnn)
+        return x_gru
 
-    def loss(self, y_pred: Tuple[Tensor, Tensor], y_true: Tensor) -> Tensor:
+    def loss(self, y_pred: Tensor, y_true: Tensor) -> Tensor:
         """Compute the loss."""
         # Permute the dimensions to have the input length as the first
         # dimension
-        pred_gru, pred_rnn = y_pred
-        pred_gru = pred_gru.permute(1, 0, 2)
+        y_pred = y_pred.permute(1, 0, 2)
 
-        true_gru, true_rnn = (
-            y_true[:, : params.OCRParams.MAX_LABEL_LENGTH],
-            # The last column is the class index
-            y_true[:, -1],
-        )
         # Compute the loss for the text/digit recognition
         input_lengths = torch.full(
-            size=(pred_gru.shape[1],), fill_value=pred_gru.shape[0]
+            size=(y_pred.shape[1],), fill_value=y_pred.shape[0]
         )
-        # for each target (true_gru) in the batch, set target length to its
+        # for each target (y_true) in the batch, set target length to its
         # length
-        target_lengths = torch.IntTensor([len(target) for target in true_gru])
+        target_lengths = torch.IntTensor([len(target) for target in y_true])
 
         loss_num = self.loss_fn_ctc(
-            pred_gru,
-            true_gru,
+            y_pred,
+            y_true,
             input_lengths,
             target_lengths,
         )
-        # Compute the loss for the additional classification
-        loss_canton = self.loss_fn_ce(pred_rnn, true_rnn).item()
 
-        return loss_num + loss_canton
+        return loss_num

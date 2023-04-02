@@ -41,38 +41,37 @@ def main() -> None:
             vinputs = vinputs.to(device)
             vlabels = vlabels.to(device)
 
-            true_number_idxs, true_canton_idxs = (
-                vlabels[:, :-1],
-                vlabels[:, -1],
-            )
-            true_number_idxs = true_number_idxs.cpu().numpy().astype(int)
-            pred_number, pred_canton = model(vinputs)
+            true_labels_idxs = vlabels.cpu().numpy().astype(int)
+            vlabels_pred = model(vinputs)
 
             # Decode the prediction index
-            _, max_number_pred_idx = torch.max(pred_number, dim=2)
-            _, max_canton_pred_idx = torch.max(pred_canton, dim=1)
+            _, pred_labels_idxs = torch.max(vlabels_pred, dim=2)
             for i in range(vinputs.shape[0]):
                 if i >= max_samples:
                     break
-                number = "".join(
+                true = "".join(
                     [
-                        str(d)
-                        for d in true_number_idxs[i]
+                        str(d - len(Canton))
+                        if d >= len(Canton)
+                        else list(Canton)[d].value
+                        for d in true_labels_idxs[i]
                         if d != params.OCRParams.GRU_BLANK_CLASS
                     ]
                 )
-                number_pred = "".join(
+                pred = "".join(
                     [
-                        str(d)
+                        str(d - len(Canton))
+                        if d >= len(Canton)
+                        else list(Canton)[d].value
                         for d, _ in groupby(
-                            max_number_pred_idx[i].cpu().numpy().astype(int)
+                            pred_labels_idxs[i].cpu().numpy().astype(int)
                         )
                         if d != params.OCRParams.GRU_BLANK_CLASS
                     ]
                 )
+                canton, number = true[:2], true[2:]
+                canton_pred, number_pred = pred[:2], pred[2:]
 
-                canton = list(Canton)[true_canton_idxs[i]].value
-                canton_pred = list(Canton)[max_canton_pred_idx[i]].value
                 evaluation_utils.live_log_img_pred(
                     live,
                     f"pred_{i}.png",

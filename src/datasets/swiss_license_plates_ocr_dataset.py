@@ -78,19 +78,20 @@ class SwissLicensePlateOCRDataset(SwissLicensePlatesDataset):
         )
 
         # Get the labels
-        number_arr = np.full(
+        labels_arr = np.full(
             (params.OCRParams.MAX_LABEL_LENGTH,),
             fill_value=params.OCRParams.GRU_BLANK_CLASS,
             dtype=np.int64,
         )
-        for i, digit in enumerate(number):
-            number_arr[i] = int(digit)
+        idx = 0
+        # set canton index
+        labels_arr[idx] = self._cantons.index(Canton(canton))
+        idx += 1
 
-        canton_arr = np.array(
-            [self._cantons.index(Canton(canton))], dtype=np.int64
-        )
+        # set nubmer index
+        while idx < len(number) + 1:
+            labels_arr[idx] = int(number[idx - 1]) + len(self._cantons)
+            idx += 1
 
         plate_tensor = self._plate_transform(plate_resized)
-        return plate_tensor, LongTensor(
-            np.concatenate((number_arr, canton_arr))
-        )
+        return plate_tensor, LongTensor(labels_arr)

@@ -45,17 +45,17 @@ class EvaluateLocalizeParams:
 class OCRParams:
     # Note: only square images are supported
     IMG_SHAPE = (1, 84, 84)
-    MAX_LABEL_LENGTH = 6
-    # number of digits + 1 for the blank symbol
-    GRU_NUM_CLASSES = 11
-    GRU_BLANK_CLASS = 10
+    MAX_LABEL_LENGTH = 7
+    # cantons (25) + number of digits (10) + 1 for the blank symbol
+    GRU_NUM_CLASSES = 36
+    GRU_BLANK_CLASS = 35
     # number of swiss cantons
-    RNN_NUM_CLASSES = len(Canton)  # not for dvc.yaml
+    # RNN_NUM_CLASSES = len(Canton)  # not for dvc.yaml
 
 
 class PrepareOCRParams:
     SEED = 25_03_2023
-    MAX_IMAGES = 50_000
+    MAX_IMAGES = 75_000
     TRAIN_SPLIT = 0.8
     # the size of the image before cropping
     IMG_SIZE = (256, 256)
@@ -65,21 +65,16 @@ class OCRModelParams:
     MODEL_NAME = "plate_ocr_v2"
     CONV_LAYERS = (64, "M", 128, "M", 256, "M", 256, "M")
 
-    GRU_AVGPOOL_SIZE = (14, 14)
-    GRU_HIDDEN_SIZE = 128
+    GRU_AVGPOOL_SIZE = (15, 15)
+    GRU_HIDDEN_SIZE = 256
     GRU_NUM_LAYERS = 2
-    GRU_DROPOUT = 0.25
-
-    RNN_AVGPOOL_SIZE = (5, 5)
-    RNN_HIDDEN_LAYERS = (1024, 512)
-    RNN_DROPOUT = 0.2
-
+    GRU_DROPOUT = 0.4
 
 
 class TrainOCRParams:
     SEED = 25_03_2023
-    LR = 0.0001
-    EPOCHS = 10
+    LR = 0.0005
+    EPOCHS = 5
 
 
 class EvaluateOCRParams:

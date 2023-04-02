@@ -7,18 +7,19 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
 
-  "python.defaultInterpreterPath": ".venv/bin/python3",
+  // "python.defaultInterpreterPath": ".venv/bin/python3",
   "python.linting.enabled": true,
   "python.linting.lintOnSave": true,
   "python.linting.flake8Enabled": true,
-  "python.linting.flake8Path": ".venv/bin/flake8",
+  // "python.linting.flake8Path": ".venv/bin/flake8",
   "python.formatting.provider": "black",
-  "python.formatting.blackPath": ".venv/bin/black",
+  // "python.formatting.blackPath": ".venv/bin/black",
   "isort.args": ["--profile", "black"],
   "[python]": {
     "editor.defaultFormatter": "ms-python.python",
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
-  }
+  },
+  "python.analysis.typeCheckingMode": "basic"
 }

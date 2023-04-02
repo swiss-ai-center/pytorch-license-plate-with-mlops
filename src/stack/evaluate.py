@@ -1,6 +1,5 @@
 import os
 from itertools import groupby
-import cv2
 
 import torch
 from dvclive import Live
@@ -11,7 +10,6 @@ import src.utils.model as model_utils
 from src.generators.swiss_license_plates_generator import Canton
 from src.models import model_registry
 from src.utils import evaluation as evaluation_utils
-from src.utils.preview import draw_bb
 from src.utils.seed import set_seed
 
 
@@ -90,31 +88,28 @@ def main() -> None:
                     vinputs_scaled_ocr[j] = scaled
 
                 # Predict the license plate
-                pred_number, pred_canton = ocr_model(
-                    vinputs_scaled_ocr.to(device)
-                )
+                vlabels_pred = ocr_model(vinputs_scaled_ocr.to(device))
 
                 # TODO: Compute the loss
-                # vloss = ocr_model.loss((pred_number, pred_canton), vlabels)
-                # running_vloss += vloss.numpy()
 
                 # Decode the number prediction
-                _, max_number_index = torch.max(pred_number, dim=2)
-                _, max_canton_index = torch.max(pred_canton, dim=1)
+                _, pred_labels_idxs = torch.max(vlabels_pred, dim=2)
 
-                for j in range(vinputs[j].shape[0]): # in range of the batch size
-                    num_raw_prediction = list(
-                        max_number_index[j].cpu().numpy()
-                    )
-                    number_pred = "".join(
+                for j in range(vinputs.shape[0]):  # in range of the batch size
+                    pred = "".join(
                         [
-                            str(d)
-                            for d, _ in groupby(num_raw_prediction)
+                            str(d - len(Canton))
+                            if d >= len(Canton)
+                            else list(Canton)[d].value
+                            for d, _ in groupby(
+                                pred_labels_idxs[j].cpu().numpy()
+                            )
                             if d != params.OCRParams.GRU_BLANK_CLASS
                         ]
                     )
+                    canton_pred, number_pred = pred[:2], pred[2:]
+
                     # Decode the number prediction
-                    canton_pred = list(Canton)[max_canton_index[j]].value
                     if i + j <= samples:
                         img_cropped = transforms.functional.resize(
                             vinputs_scaled_ocr[j],

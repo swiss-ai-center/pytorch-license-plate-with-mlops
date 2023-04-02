@@ -32,7 +32,7 @@ stages:
           - 84
         PrepareOCRParams:
           SEED: 25032023
-          MAX_IMAGES: 50000
+          MAX_IMAGES: 75000
           TRAIN_SPLIT: 0.8
           IMG_SIZE:
           - 256
@@ -171,8 +171,8 @@ stages:
       md5: cb7ff1aa234850380b55a74e00004822
       size: 8454
     - path: src/datasets/swiss_license_plates_ocr_dataset.py
-      md5: 451d9992a6899d41a3100f2049c1d6a0
-      size: 2883
+      md5: 1145dd87bb216ae5c754d4cee6fca1cd
+      size: 2921
     - path: src/generators/swiss_license_plates_generator.py
       md5: 2ae6514797d244ee438f93229198e595
       size: 12413
@@ -193,35 +193,35 @@ stages:
           - 1
           - 84
           - 84
-          MAX_LABEL_LENGTH: 6
-          GRU_NUM_CLASSES: 11
-          GRU_BLANK_CLASS: 10
+          MAX_LABEL_LENGTH: 7
+          GRU_NUM_CLASSES: 36
+          GRU_BLANK_CLASS: 35
         PrepareOCRParams:
           SEED: 25032023
-          MAX_IMAGES: 50000
+          MAX_IMAGES: 75000
           TRAIN_SPLIT: 0.8
           IMG_SIZE:
           - 256
           - 256
     outs:
     - path: data/prepared/ocr
-      md5: 867115d603efa6cd203169f8eca134a5.dir
-      size: 443237394
+      md5: 987bd8383327cf7dc4e0563f4354f99f.dir
+      size: 443331346
       nfiles: 2
     - path: out/prepared/ocr/plots/images
-      md5: 8700bd21a7b950655055ff2b0878d59a.dir
-      size: 15605
+      md5: a58eed27823294b3ec5a2e52be66521e.dir
+      size: 13902
       nfiles: 5
   train_ocr:
     cmd: python3 -m src.ocr.train
     deps:
     - path: data/prepared/ocr
-      md5: 867115d603efa6cd203169f8eca134a5.dir
-      size: 443237394
+      md5: 987bd8383327cf7dc4e0563f4354f99f.dir
+      size: 443331346
       nfiles: 2
     - path: src/models/cnn_ocr_model.py
-      md5: 92e9cce6ae0a33ff9130c7f749bfb409
-      size: 6494
+      md5: d672a8524c6d769f9646d65193934bac
+      size: 4353
     - path: src/ocr/train.py
       md5: 16b96a7c74f4134c9ad6b2d4095e45f1
       size: 1239
@@ -249,49 +249,42 @@ stages:
           - 256
           - M
           GRU_AVGPOOL_SIZE:
-          - 14
-          - 14
-          GRU_HIDDEN_SIZE: 128
+          - 15
+          - 15
+          GRU_HIDDEN_SIZE: 256
           GRU_NUM_LAYERS: 2
-          GRU_DROPOUT: 0.25
-          RNN_AVGPOOL_SIZE:
-          - 5
-          - 5
-          RNN_HIDDEN_LAYERS:
-          - 1024
-          - 512
-          RNN_DROPOUT: 0.2
+          GRU_DROPOUT: 0.4
         OCRParams:
           IMG_SHAPE:
           - 1
           - 84
           - 84
-          MAX_LABEL_LENGTH: 6
-          GRU_NUM_CLASSES: 11
-          GRU_BLANK_CLASS: 10
+          MAX_LABEL_LENGTH: 7
+          GRU_NUM_CLASSES: 36
+          GRU_BLANK_CLASS: 35
         TrainOCRParams:
           SEED: 25032023
-          LR: 0.0001
-          EPOCHS: 10
+          LR: 0.0005
+          EPOCHS: 5
     outs:
     - path: out/checkpoints/ocr
-      md5: 6ab66a3ddeed28b9a589cc6c24394057.dir
-      size: 448222909
-      nfiles: 10
+      md5: 390c74722d4653b248182a4746b821cb.dir
+      size: 169137305
+      nfiles: 5
     - path: out/models/ocr
-      md5: e18089e75d1d0b54d9f2d39372caadcf.dir
-      size: 44821196
+      md5: 486e0d43eeb29edf37978abea115b299.dir
+      size: 33826730
       nfiles: 1
     - path: out/runs/ocr/metrics.json
-      md5: a775a53070612c00cf301d93c11b4970
-      size: 135
+      md5: dd5c483c3ae92f6f964cdb0d759d96f0
+      size: 139
     - path: out/runs/ocr/plots/metrics
-      md5: 00554494b13e8bd79e255f28a341ef92.dir
-      size: 425
+      md5: ff3cdf228bc458d8754fa870672d803d.dir
+      size: 245
       nfiles: 2
     - path: out/runs/ocr/tensorboard
-      md5: 39945d99dac79446c12b858a5ab870f6.dir
-      size: 7319
+      md5: 1a403f5433e4d41777018e5b2e841696.dir
+      size: 5189
       nfiles: 3
   evaluate_stack:
     cmd: python3 -m src.stack.evaluate
@@ -305,12 +298,12 @@ stages:
       size: 33478747
       nfiles: 1
     - path: out/models/ocr
-      md5: e18089e75d1d0b54d9f2d39372caadcf.dir
-      size: 44821196
+      md5: 486e0d43eeb29edf37978abea115b299.dir
+      size: 33826730
       nfiles: 1
     - path: src/stack/evaluate.py
-      md5: b3c44986337310c1a134fbd1c687bd50
-      size: 5438
+      md5: 6c45ddbb357fcaf11ad135e5b9ec921e
+      size: 5196
     - path: src/utils/evaluation.py
       md5: 9b3c547872ebd9fe24c062799c09e517
       size: 1237
@@ -360,44 +353,37 @@ stages:
           - 256
           - M
           GRU_AVGPOOL_SIZE:
-          - 14
-          - 14
-          GRU_HIDDEN_SIZE: 128
+          - 15
+          - 15
+          GRU_HIDDEN_SIZE: 256
           GRU_NUM_LAYERS: 2
-          GRU_DROPOUT: 0.25
-          RNN_AVGPOOL_SIZE:
-          - 5
-          - 5
-          RNN_HIDDEN_LAYERS:
-          - 1024
-          - 512
-          RNN_DROPOUT: 0.2
+          GRU_DROPOUT: 0.4
         OCRParams:
           IMG_SHAPE:
           - 1
           - 84
           - 84
-          MAX_LABEL_LENGTH: 6
-          GRU_NUM_CLASSES: 11
-          GRU_BLANK_CLASS: 10
+          MAX_LABEL_LENGTH: 7
+          GRU_NUM_CLASSES: 36
+          GRU_BLANK_CLASS: 35
     outs:
     - path: out/evaluations/stack/metrics.json
-      md5: 6a41c3d1e71bb8ef330c86563eae9aee
-      size: 39
+      md5: 4f3d5019fcfc158d1a416221a2289d8d
+      size: 37
     - path: out/evaluations/stack/plots/images
-      md5: 239a3ab5ff42bfa8fd019feaaff6db73.dir
-      size: 1446759
+      md5: 25736a0e88f1f0ef4a8ecddfad33cac1.dir
+      size: 1550177
       nfiles: 11
   evaluate_ocr:
     cmd: python3 -m src.ocr.evaluate
     deps:
     - path: out/models/ocr
-      md5: e18089e75d1d0b54d9f2d39372caadcf.dir
-      size: 44821196
+      md5: 486e0d43eeb29edf37978abea115b299.dir
+      size: 33826730
       nfiles: 1
     - path: src/ocr/evaluate.py
-      md5: 57e057173c7b79b85cf34cb804170d5f
-      size: 2705
+      md5: 9f60a78ad71249434e1c981a714db2bc
+      size: 2667
     - path: src/utils/evaluation.py
       md5: 9b3c547872ebd9fe24c062799c09e517
       size: 1237
@@ -421,30 +407,23 @@ stages:
           - 256
           - M
           GRU_AVGPOOL_SIZE:
-          - 14
-          - 14
-          GRU_HIDDEN_SIZE: 128
+          - 15
+          - 15
+          GRU_HIDDEN_SIZE: 256
           GRU_NUM_LAYERS: 2
-          GRU_DROPOUT: 0.25
-          RNN_AVGPOOL_SIZE:
-          - 5
-          - 5
-          RNN_HIDDEN_LAYERS:
-          - 1024
-          - 512
-          RNN_DROPOUT: 0.2
+          GRU_DROPOUT: 0.4
         OCRParams:
           IMG_SHAPE:
           - 1
           - 84
           - 84
-          MAX_LABEL_LENGTH: 6
-          GRU_NUM_CLASSES: 11
-          GRU_BLANK_CLASS: 10
+          MAX_LABEL_LENGTH: 7
+          GRU_NUM_CLASSES: 36
+          GRU_BLANK_CLASS: 35
     outs:
     - path: out/evaluations/ocr/plots/images
-      md5: 289e9e3beca520a66d30dfef1208a991.dir
-      size: 576891
+      md5: cd20129c7003afe4220e738186355956.dir
+      size: 592114
       nfiles: 10
   evaluate_localize:
     cmd: python3 -m src.localize.evaluate

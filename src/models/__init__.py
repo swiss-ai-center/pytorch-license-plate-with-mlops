@@ -18,9 +18,5 @@ model_registry = {
         params.OCRModelParams.GRU_NUM_LAYERS,
         params.OCRParams.GRU_NUM_CLASSES,
         params.OCRModelParams.GRU_DROPOUT,
-        params.OCRModelParams.RNN_AVGPOOL_SIZE,
-        params.OCRModelParams.RNN_HIDDEN_LAYERS,
-        params.OCRParams.RNN_NUM_CLASSES,
-        params.OCRModelParams.RNN_DROPOUT,
     ),
 }
