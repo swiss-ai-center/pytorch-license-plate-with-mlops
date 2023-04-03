@@ -17,6 +17,8 @@ def live_log_img_pred(
 ) -> None:
     img = img.cpu().numpy().transpose(1, 2, 0)
     img = (img * 255).astype(np.uint8)
+    # convert to RGB
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
     img = cv2.resize(img, (width, height), interpolation=cv2.INTER_LINEAR)
     # add 100px padding to the bottom of the image
     img = cv2.copyMakeBorder(
@@ -36,10 +38,10 @@ def live_log_img_pred(
     )
     img = cv2.copyMakeBorder(
         img,
-        2,
-        2,
-        2,
-        2,
+        5,
+        5,
+        5,
+        5,
         cv2.BORDER_CONSTANT,
         value=color,
     )
