@@ -32,7 +32,7 @@ class LocalizeModelParams:
 
 class TrainLocalizeParams:
     SEED = 25_03_2023
-    LR = 0.001
+    LR = 0.0005
     EPOCHS = 3
 
 
