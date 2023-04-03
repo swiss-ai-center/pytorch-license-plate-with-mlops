@@ -22,10 +22,10 @@
             <div style="display: flex;justify-content: center;">
                 <table>
 <thead>
-<tr><th>train                         </th><th>validation                    </th><th style="text-align: right;">  step</th></tr>
+<tr><th>train                          </th><th>validation                     </th><th style="text-align: right;">  step</th></tr>
 </thead>
 <tbody>
-<tr><td>{&#x27;loss&#x27;: 0.031502246885793284}</td><td>{&#x27;loss&#x27;: 0.010099719239026307}</td><td style="text-align: right;">     2</td></tr>
+<tr><td>{&#x27;loss&#x27;: 0.0013055956651442102}</td><td>{&#x27;loss&#x27;: 0.0001873422968201339}</td><td style="text-align: right;">     2</td></tr>
 </tbody>
 </table>
             </div>
@@ -33,7 +33,7 @@
 
     <div id = "static_validation_loss">
         <script type = "text/javascript">
-            var spec = {"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": [{"step": "0", "loss": "0.01017613449767232", "rev": "workspace"}, {"step": "1", "loss": "0.010082050774246454", "rev": "workspace"}, {"step": "2", "loss": "0.010099719239026307", "rev": "workspace"}]}, "title": "validation/loss", "width": 300, "height": 300, "params": [{"name": "smooth", "value": 0.001, "bind": {"input": "range", "min": 0.001, "max": 1, "step": 0.001}}], "layer": [{"mark": "line", "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}, "transform": [{"loess": "loss", "on": "step", "groupby": ["rev", "filename", "field", "filename::field"], "bandwidth": {"signal": "smooth"}}]}, {"mark": {"type": "point", "tooltip": {"content": "data"}}, "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}}]};
+            var spec = {"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": [{"step": "0", "loss": "0.00030861891133245083", "rev": "workspace"}, {"step": "1", "loss": "0.0001865389071055688", "rev": "workspace"}, {"step": "2", "loss": "0.0001873422968201339", "rev": "workspace"}]}, "title": "validation/loss", "width": 300, "height": 300, "params": [{"name": "smooth", "value": 0.001, "bind": {"input": "range", "min": 0.001, "max": 1, "step": 0.001}}], "layer": [{"mark": "line", "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}, "transform": [{"loess": "loss", "on": "step", "groupby": ["rev", "filename", "field", "filename::field"], "bandwidth": {"signal": "smooth"}}]}, {"mark": {"type": "point", "tooltip": {"content": "data"}}, "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}}]};
             vegaEmbed('#static_validation_loss', spec);
         </script>
     </div>
@@ -41,7 +41,7 @@
 
     <div id = "static_train_loss">
         <script type = "text/javascript">
-            var spec = {"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": [{"step": "0", "loss": "0.03177319746464491", "rev": "workspace"}, {"step": "1", "loss": "0.031148793146712705", "rev": "workspace"}, {"step": "2", "loss": "0.031502246885793284", "rev": "workspace"}]}, "title": "train/loss", "width": 300, "height": 300, "params": [{"name": "smooth", "value": 0.001, "bind": {"input": "range", "min": 0.001, "max": 1, "step": 0.001}}], "layer": [{"mark": "line", "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}, "transform": [{"loess": "loss", "on": "step", "groupby": ["rev", "filename", "field", "filename::field"], "bandwidth": {"signal": "smooth"}}]}, {"mark": {"type": "point", "tooltip": {"content": "data"}}, "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}}]};
+            var spec = {"$schema": "https://vega.github.io/schema/vega-lite/v5.json", "data": {"values": [{"step": "0", "loss": "0.0021094628791615833", "rev": "workspace"}, {"step": "1", "loss": "0.0015871367368163192", "rev": "workspace"}, {"step": "2", "loss": "0.0013055956651442102", "rev": "workspace"}]}, "title": "train/loss", "width": 300, "height": 300, "params": [{"name": "smooth", "value": 0.001, "bind": {"input": "range", "min": 0.001, "max": 1, "step": 0.001}}], "layer": [{"mark": "line", "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}, "transform": [{"loess": "loss", "on": "step", "groupby": ["rev", "filename", "field", "filename::field"], "bandwidth": {"signal": "smooth"}}]}, {"mark": {"type": "point", "tooltip": {"content": "data"}}, "encoding": {"x": {"field": "step", "type": "quantitative", "title": "step"}, "y": {"field": "loss", "type": "quantitative", "title": "loss", "scale": {"zero": false}}, "color": {"field": "rev", "type": "nominal"}}}]};
             vegaEmbed('#static_train_loss', spec);
         </script>
     </div>
