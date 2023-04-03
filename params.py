@@ -44,9 +44,9 @@ class OCRParams:
     # Note: only square images are supported
     IMG_SHAPE = (1, 84, 84)
     MAX_LABEL_LENGTH = 7
-    # cantons (25) + number of digits (10) + 1 for the blank symbol
-    GRU_NUM_CLASSES = 36
-    GRU_BLANK_CLASS = 35
+    # cantons (26) + number of digits (10) + 1 for the blank symbol
+    GRU_NUM_CLASSES = 37
+    GRU_BLANK_CLASS = 36
     # number of swiss cantons
     # RNN_NUM_CLASSES = len(Canton)  # not for dvc.yaml
 

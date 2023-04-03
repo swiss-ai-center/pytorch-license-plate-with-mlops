@@ -15,7 +15,7 @@ class PlatePosition(Enum):
 
 class Canton(Enum):
     # TODO: Add the missing canton
-    # AI = "ai"
+    AI = "ai"
     AG = "ag"
     AR = "ar"
     BE = "be"
