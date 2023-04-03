@@ -36,7 +36,7 @@ class SwissLicensePlatesDataset(Dataset):
         self._max_images = max_images
         self._is_eval = is_eval
         self._cifar_dataset = datasets.CIFAR10(
-            root=os.path.abspath(os.path.join(template_path, "cifar10")),
+            root=os.path.join(template_path, "cifar10"),
             train=True,
             download=True,
         )

@@ -1,4 +1,3 @@
-import os
 import random
 from enum import Enum
 from typing import Dict, List, Tuple
@@ -46,7 +45,7 @@ class Canton(Enum):
 
 class SwissLicensePlatesGenerator:
     def __init__(self, template_path: str) -> None:
-        self._template_path = os.path.abspath(template_path)
+        self._template_path = template_path
         self._digits_path = f"{self._template_path}/digits"
         self._canton_path = f"{self._template_path}/cantons"
 
