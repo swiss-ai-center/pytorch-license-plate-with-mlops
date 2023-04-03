@@ -95,11 +95,11 @@ class SwissLicensePlateModelStack:
 
 localize_model = model_registry[params.LocalizeModelParams.MODEL_NAME]
 model_utils.load_weights(
-    localize_model, params.Glob.get_out_save_path("localize"), "model.pt"
+    localize_model, params.glob_params["out_save_localize_path"], "model.pt"
 )
 ocr_model = model_registry[params.OCRModelParams.MODEL_NAME]
 model_utils.load_weights(
-    ocr_model, params.Glob.get_out_save_path("ocr"), "model.pt"
+    ocr_model, params.glob_params["out_save_ocr_path"], "model.pt"
 )
 model = SwissLicensePlateModelStack(
     locize_model=localize_model, ocr_model=ocr_model

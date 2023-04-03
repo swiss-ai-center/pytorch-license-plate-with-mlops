@@ -22,7 +22,7 @@ def main():
 
     dataset = SwissLicensePlateOCRDataset(
         img_size_before_crop=params.PrepareOCRParams.IMG_SIZE,
-        template_path=params.Glob.get("dataset_path"),
+        template_path=params.glob_params["dataset_path"],
         img_shape=params.OCRParams.IMG_SHAPE,
         img_transform=img_transform,
         max_images=params.PrepareOCRParams.MAX_IMAGES,
@@ -45,7 +45,7 @@ def main():
         **loader_params,
     )
 
-    path = params.Glob.get_prepared_data_path("ocr")
+    path = params.glob_params["prepared_data_ocr_path"]
     dataset_utils.save_dataloader(train_loader, path, "train.pt")
     dataset_utils.save_dataloader(val_loader, path, "val.pt")
 
@@ -56,7 +56,7 @@ def main():
     )
 
     dataset_utils.save_samples(
-        minibatch, params.Glob.get_out_prepared_path("ocr")
+        minibatch, params.glob_params["out_prepared_ocr_path"]
     )
 
 

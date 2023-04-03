@@ -20,11 +20,11 @@ def main():
         lr=params.TrainLocalizeParams.LR,
     )
 
-    path = params.Glob.get_prepared_data_path("localize")
+    path = params.glob_params["prepared_data_localize_path"]
     train_loader = torch.load(os.path.join(path, "train.pt"))
     val_loader = torch.load(os.path.join(path, "val.pt"))
 
-    log_path = params.Glob.get_out_log_path("localize")
+    log_path = params.glob_params["out_log_localize_path"]
 
     with Live(log_path) as live:
         model = train_utils.fit(
@@ -35,13 +35,15 @@ def main():
             epochs=params.TrainLocalizeParams.EPOCHS,
             batch_size=params.BATCH_SIZE,
             log_path=log_path,
-            checkpoint_path=params.Glob.get_out_checkpoint_path("localize"),
+            checkpoint_path=params.glob_params[
+                "out_checkpoints_localize_path"
+            ],
             live=live,
         )
 
     model_utils.save(
         model,
-        params.Glob.get_out_save_path("localize"),
+        params.glob_params["out_save_localize_path"],
         "model.pt",
     )
 

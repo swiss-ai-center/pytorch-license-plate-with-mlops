@@ -18,11 +18,11 @@ def main() -> None:
     model = model_registry[params.LocalizeModelParams.MODEL_NAME]
 
     model_utils.load_weights(
-        model, params.Glob.get_out_save_path("localize"), "model.pt"
+        model, params.glob_params["out_save_localize_path"], "model.pt"
     )
 
     val_loader = torch.load(
-        os.path.join(params.Glob.get_prepared_data_path("localize"), "val.pt")
+        os.path.join(params.glob_params["prepared_localize_path"], "val.pt")
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -33,7 +33,7 @@ def main() -> None:
     # We don't need gradients on to do reporting
     model.eval()
 
-    with Live(params.Glob.get_out_evaluation_path("localize")) as live:
+    with Live(params.glob_params["out_evaluation_localize_path"]) as live:
         with torch.no_grad():
             vdata = next(iter(val_loader))
             vinputs, vlabels = vdata[:2]

@@ -19,7 +19,7 @@ def main():
     )
 
     dataset = SwissLicensePlatesDataset(
-        template_path=params.Glob.get("dataset_path"),
+        template_path=params.glob_params["dataset_path"],
         img_shape=(
             params.LocalizeParams.IMG_SHAPE[0],
             *params.PrepareOCRParams.IMG_SIZE,
@@ -34,7 +34,7 @@ def main():
         batch_size=params.BATCH_SIZE,
     )
 
-    path = params.Glob.get_prepared_data_path("stack")
+    path = params.glob_params["prepared_data_stack_path"]
     dataset_utils.save_dataloader(val_loader, path, "val.pt")
 
 

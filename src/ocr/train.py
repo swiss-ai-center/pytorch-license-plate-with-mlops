@@ -20,11 +20,11 @@ def main():
         lr=params.TrainOCRParams.LR,
     )
 
-    path = params.Glob.get_prepared_data_path("ocr")
+    path = params.glob_params["prepared_data_ocr_path"]
     train_loader = torch.load(os.path.join(path, "train.pt"))
     val_loader = torch.load(os.path.join(path, "val.pt"))
 
-    log_path = params.Glob.get_out_log_path("ocr")
+    log_path = params.glob_params["out_log_ocr_path"]
 
     with Live(log_path) as live:
         model = train_utils.fit(
@@ -35,13 +35,13 @@ def main():
             epochs=params.TrainOCRParams.EPOCHS,
             batch_size=params.BATCH_SIZE,
             log_path=log_path,
-            checkpoint_path=params.Glob.get_out_checkpoint_path("ocr"),
+            checkpoint_path=params.glob_params["out_checkpoints_ocr_path"],
             live=live,
         )
 
     model_utils.save(
         model,
-        params.Glob.get_out_save_path("ocr"),
+        params.glob_params["out_save_ocr_path"],
         "model.pt",
     )
 

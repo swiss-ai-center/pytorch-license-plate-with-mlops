@@ -19,15 +19,17 @@ def main() -> None:
     # Load models
     localize_model = model_registry[params.LocalizeModelParams.MODEL_NAME]
     model_utils.load_weights(
-        localize_model, params.Glob.get_out_save_path("localize"), "model.pt"
+        localize_model,
+        params.glob_params["out_save_localize_path"],
+        "model.pt",
     )
     ocr_model = model_registry[params.OCRModelParams.MODEL_NAME]
     model_utils.load_weights(
-        ocr_model, params.Glob.get_out_save_path("ocr"), "model.pt"
+        ocr_model, params.glob_params["out_save_ocr_path"], "model.pt"
     )
 
     val_loader = torch.load(
-        os.path.join(params.Glob.get_prepared_data_path("stack"), "val.pt")
+        os.path.join(params.glob_params["prepared_data_stack_path"], "val.pt")
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -43,7 +45,7 @@ def main() -> None:
     val_correct = 0
     val_total = 0
 
-    with Live(params.Glob.get_out_evaluation_path("stack")) as live:
+    with Live(params.glob_params["out_evaluation_stack_path"]) as live:
         with torch.no_grad():
             for i, vdata in enumerate(val_loader):
                 vinputs, vlabels, numbers_str, cantons_str = vdata

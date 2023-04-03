@@ -1,15 +1,46 @@
 # Global path parameters - see params.py for the rest of the parameters
+
+# -- DVC parameters ----------------------------------------------------------
+# Root folders
 src_path: "src"
 out_path: "out"
+
+# Data paths
+dataset_path: "data/datasets/swiss_templates"
+prepared_data_path: "data/prepared"
+
+# Subfolders
 out_prepared_folder: "prepared"
 out_log_folder: "runs"
-out_save_folder: "models"
 out_checkpoint_folder: "checkpoints"
+out_save_folder: "models"
 out_evaluation_folder: "evaluations"
 
+# Model folders
 localize_model_folder: "localize"
 ocr_model_folder: "ocr"
 stack_model_folder: "stack"
 
-dataset_path: "data/datasets/swiss_templates"
-prepared_data_path: "data/prepared"
+# -- Python parameters -------------------------------------------------------
+# Prepared paths
+prepared_data_localize_path: "data/prepared/localize"
+prepared_data_ocr_path: "data/prepared/ocr"
+prepared_data_stack_path: "data/prepared/stack"
+
+out_prepared_localize_path: "out/prepared/localize"
+out_prepared_ocr_path: "out/prepared/ocr"
+
+# Train paths
+out_log_localize_path: "out/runs/localize"
+out_log_ocr_path: "out/runs/ocr"
+
+out_save_localize_path: "out/models/localize"
+out_save_ocr_path: "out/models/ocr"
+
+out_checkpoints_localize_path: "out/checkpoints/localize"
+out_checkpoints_ocr_path: "out/checkpoints/ocr"
+
+# Evaluation paths
+out_evaluation_localize_path: "out/evaluations/localize"
+out_evaluation_ocr_path: "out/evaluations/ocr"
+out_evaluation_stack_path: "out/evaluations/stack"
