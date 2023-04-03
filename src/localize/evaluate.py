@@ -22,7 +22,9 @@ def main() -> None:
     )
 
     val_loader = torch.load(
-        os.path.join(params.glob_params["prepared_localize_path"], "val.pt")
+        os.path.join(
+            params.glob_params["prepared_data_localize_path"], "val.pt"
+        )
     )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
