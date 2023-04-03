@@ -17,12 +17,11 @@ jobs:
           pip install -r requirements/requirements.txt
       - name: Set up DVC credentials
         run: |
-          dvc remote modify data access_key_id ${{ secrets.MINIO_KEY_ID }}
-          dvc remote modify data secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
+          dvc remote modify --local data access_key_id ${{ secrets.MINIO_KEY_ID }}
+          dvc remote modify --local data secret_access_key ${{ secrets.MINIO_ACCESS_KEY }}
       - name: Run DVC pipeline
         run: |
           dvc pull
-          dvc repro
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

@@ -4,8 +4,6 @@ import typing
 import yaml
 from dotenv import load_dotenv
 
-from src.generators.swiss_license_plates_generator import Canton
-
 load_dotenv(".env.local")
 
 
