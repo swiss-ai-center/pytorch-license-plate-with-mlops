@@ -39,9 +39,6 @@ class SwissLicensePlateModelStack:
         )
         self.__name__ = "SwissLicensePlateModelStack"
 
-    def predict(self, img: Tensor, *args, **kwargs) -> dict:
-        return img
-
     def __call__(self, img: Tensor, *args, **kwargs) -> dict:
         img = Image.fromarray(img.numpy().transpose(1, 2, 0).squeeze())
         # convert to rgb if needed

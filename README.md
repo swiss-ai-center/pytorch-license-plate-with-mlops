@@ -46,7 +46,7 @@ The approach was to train two models:
 
 The first two images are the results of the individual models, localize and OCR respectively. The third image shows the result of the combination of both models to crop the image to the license plate and then run the OCR model on the cropped image.
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 1rem">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 1rem; margin-bottom: 1rem">
   <img src="out/evaluations/localize/plots/images/pred_0.png" width="200" height="200" />
   <img src="out/evaluations/ocr/plots/images/pred_0.png" width="200" />
   <img src="out/evaluate/../evaluations/stack/plots/images/stack_pred_0.png" width="415" />

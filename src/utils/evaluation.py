@@ -28,6 +28,21 @@ def live_log_img_pred(
         cv2.BORDER_CONSTANT,
         value=(0, 0, 0),
     )
+    # add border to image depending if the prediction is correct
+    color = (
+        (0, 255, 0)
+        if number_pred == number and canton_pred == canton
+        else (0, 0, 255)
+    )
+    img = cv2.copyMakeBorder(
+        img,
+        2,
+        2,
+        2,
+        2,
+        cv2.BORDER_CONSTANT,
+        value=color,
+    )
     # 3% of the image width
     x_offset = round(img.shape[1] * 0.03)
     y_offset = round(img.shape[0] * 0.03)
