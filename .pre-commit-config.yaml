@@ -3,17 +3,23 @@ repos:
     rev: v4.4.0
     hooks:
       - id: check-yaml
+        exclude: "^out\/.*$"
       - id: end-of-file-fixer
+        exclude: "^out\/.*$"
       - id: trailing-whitespace
+        exclude: "^out\/.*$"
   - repo: https://github.com/psf/black
     rev: 23.1.0
     hooks:
       - id: black
+        exclude: "^out\/.*$"
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
       - id: isort
+        exclude: "^out\/.*$"
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
       - id: flake8
+        exclude: "^out\/.*$"
