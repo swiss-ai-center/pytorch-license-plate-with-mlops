@@ -294,19 +294,19 @@ stages:
       size: 221542631
       nfiles: 1
     - path: out/models/localize
-      md5: 40166afc38064de6d152155db350f338.dir
+      md5: a508a7dcc23dbcf20300c64a08c4f9a4.dir
       size: 33478747
       nfiles: 1
     - path: out/models/ocr
-      md5: d067f9b1878410effeb70782232106bd.dir
+      md5: 99dd402b19133b0b80d46404ca383e58.dir
       size: 60617642
       nfiles: 1
     - path: src/stack/evaluate.py
-      md5: 6c45ddbb357fcaf11ad135e5b9ec921e
-      size: 5196
+      md5: bdae368fef231ea3fb332a48b3f80bc5
+      size: 5225
     - path: src/utils/evaluation.py
-      md5: 05207364c9c9e12f46eb6ba07efa051a
-      size: 1569
+      md5: f383b20033362e2c1d2de5d9b178eec4
+      size: 1638
     - path: src/utils/model.py
       md5: 1c37662db96a47d248e944a5c4930461
       size: 1199
@@ -368,11 +368,11 @@ stages:
           GRU_BLANK_CLASS: 36
     outs:
     - path: out/evaluations/stack/metrics.json
-      md5: 8c1c0248a41661ee946f29c933973561
-      size: 39
+      md5: a07a07dd64b38c0f78a46b2ca70a19a3
+      size: 37
     - path: out/evaluations/stack/plots/images
-      md5: 05318c625641e8541b053e811af71abc.dir
-      size: 1396806
+      md5: 7511c60575d4a9f0b83c9494679fffc6.dir
+      size: 2304597
       nfiles: 11
   evaluate_ocr:
     cmd: python3 -m src.ocr.evaluate
@@ -429,12 +429,12 @@ stages:
     cmd: python3 -m src.localize.evaluate
     deps:
     - path: out/models/localize
-      md5: 40166afc38064de6d152155db350f338.dir
+      md5: a508a7dcc23dbcf20300c64a08c4f9a4.dir
       size: 33478747
       nfiles: 1
     - path: src/localize/evaluate.py
-      md5: 6cbcb8c8d63d928616302a55a1653bdc
-      size: 1739
+      md5: 019a77986d597074e266d1ce2b835e2a
+      size: 1770
     - path: src/utils/model.py
       md5: 1c37662db96a47d248e944a5c4930461
       size: 1199
@@ -471,6 +471,6 @@ stages:
           - 84
     outs:
     - path: out/evaluations/localize/plots/images
-      md5: 09b612b35f0d25a97b306cb2c46d84cd.dir
-      size: 68309
+      md5: 08a8b089ff20a1307822f20d7a54e309.dir
+      size: 67995
       nfiles: 10
