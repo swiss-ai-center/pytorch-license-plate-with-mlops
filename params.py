@@ -115,7 +115,18 @@ if GLOB_SEED is not None:
 # -- Python specific  --------------------------------------------------------
 # The following are typing extensions to make catching errors easier
 GlobParamsKeysType = typing.Literal[
+    "src_path",
+    "out_path",
     "dataset_path",
+    "prepared_data_path",
+    "out_prepared_folder",
+    "out_log_folder",
+    "out_checkpoint_folder",
+    "out_save_folder",
+    "out_evaluation_folder",
+    "localize_model_folder",
+    "ocr_model_folder",
+    "stack_model_folder",
     "prepared_data_localize_path",
     "prepared_data_ocr_path",
     "prepared_data_stack_path",
