@@ -261,11 +261,21 @@ dvc repro
 
 #### DVCLive
 
-TODO
+While the experiment is running, you can view the live metrics with the following command:
+
+```sh
+dvc plots diff --open
+```
+
+This will open in the browser the difference between the current experiment and remote HEAD.
 
 #### TensorBoard
 
-TODO
+To view the live training metrics, you can run the following command:
+
+```sh
+tensorboard --logdir_spec=localize:out/runs/localize/tensorboard,ocr:out/runs/ocr/tensorboard
+```
 
 ### Push your Changes
 
