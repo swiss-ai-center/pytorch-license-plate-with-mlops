@@ -251,6 +251,12 @@ DVC experiments are stored automatically saved once they are run. You can list a
 dvc exp show
 ```
 
+To promote an experiment to a new Git branch, you can run the following command:
+
+```sh
+dvc exp branch <experiment name> <branch name>
+```
+
 To reproduce the DVC pipeline using the parameters defined in the `params.py` file, you can run the following command:
 
 ```sh

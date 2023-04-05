@@ -3,7 +3,7 @@ import typing
 import yaml
 
 # -- DVC params --------------------------------------------------------------
-MULTIPROCESSING = True
+MULTIPROCESSING = False
 BATCH_SIZE = 32
 
 
@@ -14,7 +14,7 @@ class LocalizeParams:
 
 class PrepareLocalizeParams:
     SEED = 25032023
-    MAX_IMAGES = 100000
+    MAX_IMAGES = 256
     TRAIN_SPLIT = 0.8
 
 
@@ -29,7 +29,7 @@ class LocalizeModelParams:
 class TrainLocalizeParams:
     SEED = 25032023
     LR = 0.0005
-    EPOCHS = 3
+    EPOCHS = 1
 
 
 class EvaluateLocalizeParams:
@@ -49,7 +49,7 @@ class OCRParams:
 
 class PrepareOCRParams:
     SEED = 25032023
-    MAX_IMAGES = 250000
+    MAX_IMAGES = 256
     TRAIN_SPLIT = 0.8
     # the size of the image before cropping
     IMG_SIZE = (256, 256)
@@ -68,7 +68,7 @@ class OCRModelParams:
 class TrainOCRParams:
     SEED = 25032023
     LR = 0.00025
-    EPOCHS = 2
+    EPOCHS = 1
 
 
 class EvaluateOCRParams:
@@ -77,7 +77,7 @@ class EvaluateOCRParams:
 
 class PrepareStackParams:
     SEED = 25032023
-    MAX_IMAGES = 5000
+    MAX_IMAGES = 256
 
 
 class EvaluateStackParams:
