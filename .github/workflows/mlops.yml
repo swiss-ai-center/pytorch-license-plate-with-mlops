@@ -18,15 +18,6 @@ jobs:
         with:
           # Fetch all history for DVC
           fetch-depth: 0
-      - name: Install poetry
-        run: pipx install poetry==1.4.0
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install --without=dev
       - name: Setup DVC
         uses: iterative/setup-dvc@v1
         with:
