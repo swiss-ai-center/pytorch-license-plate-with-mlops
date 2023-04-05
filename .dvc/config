@@ -1,5 +1,4 @@
 [core]
     remote = data
 ['remote "data"']
-    url = s3://pytorch-mlops-license-plate-leonard
-    endpointurl = https://minio-aii.iict.ch
+    url = gs://pytorch-license-plate-data/dvcstore

@@ -1,12 +1,14 @@
-name: CML CI
+name: CML CI on self-hosted runner
 on:
-  push:
-    branches: [main]
+  # This will only run if triggered manually. To use the self hosted runner
+  # uncomment the pust event.
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 jobs:
   train-and-report:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, cml-runner-gpu]
     steps:
       - name: Clone repo
         uses: actions/checkout@v3

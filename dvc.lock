@@ -1,165 +1,5 @@
 schema: '2.0'
 stages:
-  prepare_stack:
-    cmd: python3 -m src.stack.prepare
-    deps:
-    - path: data/datasets/swiss_templates
-      md5: 59bae5f83c275d47d1de1b421cc0c904.dir
-      size: 356813768
-      nfiles: 74
-    - path: src/datasets/swiss_license_plates_dataset.py
-      md5: 0c8000140097a7ecab0b541e53d006fe
-      size: 8437
-    - path: src/generators/swiss_license_plates_generator.py
-      md5: 5eca5b809dccadee29f64a29a2ee3199
-      size: 12384
-    - path: src/stack/prepare.py
-      md5: 734cfb3a1e015da0ad3ed88ba2721729
-      size: 1194
-    - path: src/utils/dataset.py
-      md5: 36ccdf1cca892a2bde90d810c73c7791
-      size: 2317
-    - path: src/utils/seed.py
-      md5: f94e3941728b5363f37f1139fc21cf24
-      size: 736
-    params:
-      params.py:
-        BATCH_SIZE: 32
-        LocalizeParams:
-          IMG_SHAPE:
-          - 1
-          - 84
-          - 84
-        PrepareOCRParams:
-          SEED: 25032023
-          MAX_IMAGES: 250000
-          TRAIN_SPLIT: 0.8
-          IMG_SIZE:
-          - 256
-          - 256
-        PrepareStackParams:
-          SEED: 25032023
-          MAX_IMAGES: 5000
-    outs:
-    - path: data/prepared/stack
-      md5: be9e0489eee555b983478d25d4e9d7b9.dir
-      size: 221542631
-      nfiles: 1
-  prepare_localize:
-    cmd: python3 -m src.localize.prepare
-    deps:
-    - path: data/datasets/swiss_templates
-      md5: 59bae5f83c275d47d1de1b421cc0c904.dir
-      size: 356813768
-      nfiles: 74
-    - path: src/datasets/swiss_license_plates_dataset.py
-      md5: 0c8000140097a7ecab0b541e53d006fe
-      size: 8437
-    - path: src/generators/swiss_license_plates_generator.py
-      md5: 5eca5b809dccadee29f64a29a2ee3199
-      size: 12384
-    - path: src/localize/prepare.py
-      md5: 733209d055b7721ad7fa7ed6abbf5801
-      size: 1798
-    - path: src/utils/dataset.py
-      md5: 36ccdf1cca892a2bde90d810c73c7791
-      size: 2317
-    - path: src/utils/seed.py
-      md5: f94e3941728b5363f37f1139fc21cf24
-      size: 736
-    params:
-      params.py:
-        BATCH_SIZE: 32
-        LocalizeParams:
-          IMG_SHAPE:
-          - 1
-          - 84
-          - 84
-        PrepareLocalizeParams:
-          SEED: 25032023
-          MAX_IMAGES: 100000
-          TRAIN_SPLIT: 0.8
-    outs:
-    - path: data/prepared/localize
-      md5: f7ca47d2af1c94e6ad950b775da70545.dir
-      size: 443454354
-      nfiles: 2
-    - path: out/prepared/localize/plots/images
-      md5: caa4519fd06352333940dc634f3520b6.dir
-      size: 17470
-      nfiles: 5
-  train_localize:
-    cmd: python3 -m src.localize.train
-    deps:
-    - path: data/prepared/localize
-      md5: f7ca47d2af1c94e6ad950b775da70545.dir
-      size: 443454354
-      nfiles: 2
-    - path: src/localize/train.py
-      md5: 0858715e0143dfcfbc97dd27e8a6e885
-      size: 1322
-    - path: src/models/cnn_localizer_model.py
-      md5: a380c4d202c6bcd726d923df1cbf2de1
-      size: 3330
-    - path: src/utils/model.py
-      md5: 1c37662db96a47d248e944a5c4930461
-      size: 1199
-    - path: src/utils/seed.py
-      md5: f94e3941728b5363f37f1139fc21cf24
-      size: 736
-    - path: src/utils/train.py
-      md5: 3f001032823f9b609f598054d7150b8e
-      size: 3975
-    params:
-      params.py:
-        BATCH_SIZE: 32
-        LocalizeModelParams:
-          MODEL_NAME: plate_localizer_v3
-          CONV_LAYERS:
-          - 64
-          - M
-          - 128
-          - M
-          - 256
-          - M
-          - 512
-          - M
-          AVGPOOL_SIZE:
-          - 5
-          - 5
-          HIDDEN_LAYERS:
-          - 512
-          - 512
-          DROPOUT: 0.4
-        LocalizeParams:
-          IMG_SHAPE:
-          - 1
-          - 84
-          - 84
-        TrainLocalizeParams:
-          SEED: 25032023
-          LR: 0.0005
-          EPOCHS: 3
-    outs:
-    - path: out/checkpoints/localize
-      md5: 1a065c7f5e04289463a4fc6b5751b5c7.dir
-      size: 66959382
-      nfiles: 2
-    - path: out/models/localize
-      md5: a508a7dcc23dbcf20300c64a08c4f9a4.dir
-      size: 33478747
-      nfiles: 1
-    - path: out/runs/localize/metrics.json
-      md5: 59d1b54446eca88f4893ffdf7f659cbf
-      size: 142
-    - path: out/runs/localize/plots/metrics
-      md5: 33ec53dccfca487596ebc300f31b884c.dir
-      size: 165
-      nfiles: 2
-    - path: out/runs/localize/tensorboard
-      md5: 43064d749dfd92f3a922dbca8567fee7.dir
-      size: 4043
-      nfiles: 3
   prepare_ocr:
     cmd: python3 -m src.ocr.prepare
     deps:
@@ -187,7 +27,7 @@ stages:
       size: 736
     params:
       params.py:
-        BATCH_SIZE: 32
+        BATCH_SIZE: 16
         OCRParams:
           IMG_SHAPE:
           - 1
@@ -205,19 +45,19 @@ stages:
           - 256
     outs:
     - path: data/prepared/ocr
-      md5: a3a9bbc072d7801c7b1016dd780f4088.dir
-      size: 444206482
+      md5: 20cf5c75caf6c08646130329403d2435.dir
+      size: 443088146
       nfiles: 2
     - path: out/prepared/ocr/plots/images
-      md5: 3f1c0763f14a5b1acbebe292feea748b.dir
-      size: 15835
+      md5: 3b94af765b5f3e64561723d80ae53021.dir
+      size: 16775
       nfiles: 5
   train_ocr:
     cmd: python3 -m src.ocr.train
     deps:
     - path: data/prepared/ocr
-      md5: a3a9bbc072d7801c7b1016dd780f4088.dir
-      size: 444206482
+      md5: 20cf5c75caf6c08646130329403d2435.dir
+      size: 443088146
       nfiles: 2
     - path: src/models/cnn_ocr_model.py
       md5: d672a8524c6d769f9646d65193934bac
@@ -236,7 +76,7 @@ stages:
       size: 3975
     params:
       params.py:
-        BATCH_SIZE: 32
+        BATCH_SIZE: 16
         OCRModelParams:
           MODEL_NAME: plate_ocr_v2
           CONV_LAYERS:
@@ -268,45 +108,305 @@ stages:
           EPOCHS: 2
     outs:
     - path: out/checkpoints/ocr
-      md5: 3c86712954daaa4b1bd0754e3647646d.dir
-      size: 121236746
-      nfiles: 2
+      md5: e38ce10994ef76d92b52a4814fd79201.dir
+      size: 60621027
+      nfiles: 1
     - path: out/models/ocr
-      md5: 99dd402b19133b0b80d46404ca383e58.dir
-      size: 60617642
+      md5: d474b990a46bf517b42ca0a74c19c21f.dir
+      size: 60619231
       nfiles: 1
     - path: out/runs/ocr/metrics.json
-      md5: 81e57a614c7748daaaea06b1d4ecb627
-      size: 139
+      md5: 84858dd770fe2b9284360553f8657e41
+      size: 135
     - path: out/runs/ocr/plots/metrics
-      md5: c734f8085f67c51a491f833953c7cdf7.dir
-      size: 109
+      md5: b378dd52d371bd4db25462a3969ff1b2.dir
+      size: 61
       nfiles: 2
     - path: out/runs/ocr/tensorboard
-      md5: d12e82c78b4ee0a35854fd5359791e96.dir
-      size: 6459
+      md5: 6a459871756127a0d257ef82be70f52f.dir
+      size: 252
       nfiles: 3
+  evaluate_ocr:
+    cmd: python3 -m src.ocr.evaluate
+    deps:
+    - path: out/models/ocr
+      md5: d474b990a46bf517b42ca0a74c19c21f.dir
+      size: 60619231
+      nfiles: 1
+    - path: src/ocr/evaluate.py
+      md5: 817a31e13242f39417a1e9fcb7a78089
+      size: 2676
+    - path: src/utils/evaluation.py
+      md5: 5e10ef201d3a746c41cba0b2a07b04a6
+      size: 1654
+    - path: src/utils/model.py
+      md5: 1c37662db96a47d248e944a5c4930461
+      size: 1199
+    - path: src/utils/seed.py
+      md5: f94e3941728b5363f37f1139fc21cf24
+      size: 736
+    params:
+      params.py:
+        OCRModelParams:
+          MODEL_NAME: plate_ocr_v2
+          CONV_LAYERS:
+          - 64
+          - M
+          - 128
+          - M
+          - 256
+          - M
+          - 256
+          - M
+          GRU_AVGPOOL_SIZE:
+          - 18
+          - 18
+          GRU_HIDDEN_SIZE: 384
+          GRU_NUM_LAYERS: 2
+          GRU_DROPOUT: 0.5
+        OCRParams:
+          IMG_SHAPE:
+          - 1
+          - 84
+          - 84
+          MAX_LABEL_LENGTH: 7
+          GRU_NUM_CLASSES: 37
+          GRU_BLANK_CLASS: 36
+    outs:
+    - path: out/evaluations/ocr/plots/images
+      md5: 014ba96c4e2801488082b46e63054cc9.dir
+      size: 822749
+      nfiles: 10
+  prepare_localize:
+    cmd: python3 -m src.localize.prepare
+    deps:
+    - path: data/datasets/swiss_templates
+      md5: 59bae5f83c275d47d1de1b421cc0c904.dir
+      size: 356813768
+      nfiles: 74
+    - path: src/datasets/swiss_license_plates_dataset.py
+      md5: 0c8000140097a7ecab0b541e53d006fe
+      size: 8437
+    - path: src/generators/swiss_license_plates_generator.py
+      md5: 5eca5b809dccadee29f64a29a2ee3199
+      size: 12384
+    - path: src/localize/prepare.py
+      md5: 733209d055b7721ad7fa7ed6abbf5801
+      size: 1798
+    - path: src/utils/dataset.py
+      md5: 36ccdf1cca892a2bde90d810c73c7791
+      size: 2317
+    - path: src/utils/seed.py
+      md5: f94e3941728b5363f37f1139fc21cf24
+      size: 736
+    params:
+      params.py:
+        BATCH_SIZE: 16
+        LocalizeParams:
+          IMG_SHAPE:
+          - 1
+          - 84
+          - 84
+        PrepareLocalizeParams:
+          SEED: 25032023
+          MAX_IMAGES: 100000
+          TRAIN_SPLIT: 0.8
+    outs:
+    - path: data/prepared/localize
+      md5: 9dcb880622b9248f0adf21d1532fb101.dir
+      size: 443085970
+      nfiles: 2
+    - path: out/prepared/localize/plots/images
+      md5: 3245740c012c1e4f889a90571ef3de91.dir
+      size: 19887
+      nfiles: 5
+  prepare_stack:
+    cmd: python3 -m src.stack.prepare
+    deps:
+    - path: data/datasets/swiss_templates
+      md5: 59bae5f83c275d47d1de1b421cc0c904.dir
+      size: 356813768
+      nfiles: 74
+    - path: src/datasets/swiss_license_plates_dataset.py
+      md5: 0c8000140097a7ecab0b541e53d006fe
+      size: 8437
+    - path: src/generators/swiss_license_plates_generator.py
+      md5: 5eca5b809dccadee29f64a29a2ee3199
+      size: 12384
+    - path: src/stack/prepare.py
+      md5: 734cfb3a1e015da0ad3ed88ba2721729
+      size: 1194
+    - path: src/utils/dataset.py
+      md5: 36ccdf1cca892a2bde90d810c73c7791
+      size: 2317
+    - path: src/utils/seed.py
+      md5: f94e3941728b5363f37f1139fc21cf24
+      size: 736
+    params:
+      params.py:
+        BATCH_SIZE: 16
+        LocalizeParams:
+          IMG_SHAPE:
+          - 1
+          - 84
+          - 84
+        PrepareOCRParams:
+          SEED: 25032023
+          MAX_IMAGES: 250000
+          TRAIN_SPLIT: 0.8
+          IMG_SIZE:
+          - 256
+          - 256
+        PrepareStackParams:
+          SEED: 25032023
+          MAX_IMAGES: 5000
+    outs:
+    - path: data/prepared/stack
+      md5: 32e01685b5c418d2fc710ec60a9a3c7d.dir
+      size: 221542631
+      nfiles: 1
+  train_localize:
+    cmd: python3 -m src.localize.train
+    deps:
+    - path: data/prepared/localize
+      md5: 9dcb880622b9248f0adf21d1532fb101.dir
+      size: 443085970
+      nfiles: 2
+    - path: src/localize/train.py
+      md5: 0858715e0143dfcfbc97dd27e8a6e885
+      size: 1322
+    - path: src/models/cnn_localizer_model.py
+      md5: a380c4d202c6bcd726d923df1cbf2de1
+      size: 3330
+    - path: src/utils/model.py
+      md5: 1c37662db96a47d248e944a5c4930461
+      size: 1199
+    - path: src/utils/seed.py
+      md5: f94e3941728b5363f37f1139fc21cf24
+      size: 736
+    - path: src/utils/train.py
+      md5: 3f001032823f9b609f598054d7150b8e
+      size: 3975
+    params:
+      params.py:
+        BATCH_SIZE: 16
+        LocalizeModelParams:
+          MODEL_NAME: plate_localizer_v3
+          CONV_LAYERS:
+          - 64
+          - M
+          - 128
+          - M
+          - 256
+          - M
+          - 512
+          - M
+          AVGPOOL_SIZE:
+          - 5
+          - 5
+          HIDDEN_LAYERS:
+          - 512
+          - 512
+          DROPOUT: 0.4
+        LocalizeParams:
+          IMG_SHAPE:
+          - 1
+          - 84
+          - 84
+        TrainLocalizeParams:
+          SEED: 25032023
+          LR: 0.0005
+          EPOCHS: 3
+    outs:
+    - path: out/checkpoints/localize
+      md5: c70f378d6b852df6235b87af7800ab79.dir
+      size: 33479563
+      nfiles: 1
+    - path: out/models/localize
+      md5: aca68242d8452298396cd7b0ea2b3818.dir
+      size: 33478619
+      nfiles: 1
+    - path: out/runs/localize/metrics.json
+      md5: 3ac19e565f934c77a394de5f1351107a
+      size: 138
+    - path: out/runs/localize/plots/metrics
+      md5: a4f635a8dc1bbf1d4cab6f427e7ea5c3.dir
+      size: 64
+      nfiles: 2
+    - path: out/runs/localize/tensorboard
+      md5: f0e4b914217bc36768c08da2b0bb051e.dir
+      size: 252
+      nfiles: 3
+  evaluate_localize:
+    cmd: python3 -m src.localize.evaluate
+    deps:
+    - path: out/models/localize
+      md5: aca68242d8452298396cd7b0ea2b3818.dir
+      size: 33478619
+      nfiles: 1
+    - path: src/localize/evaluate.py
+      md5: 019a77986d597074e266d1ce2b835e2a
+      size: 1770
+    - path: src/utils/model.py
+      md5: 1c37662db96a47d248e944a5c4930461
+      size: 1199
+    - path: src/utils/preview.py
+      md5: a0538f1dd2c1ecc5184a13a746bda674
+      size: 573
+    - path: src/utils/seed.py
+      md5: f94e3941728b5363f37f1139fc21cf24
+      size: 736
+    params:
+      params.py:
+        LocalizeModelParams:
+          MODEL_NAME: plate_localizer_v3
+          CONV_LAYERS:
+          - 64
+          - M
+          - 128
+          - M
+          - 256
+          - M
+          - 512
+          - M
+          AVGPOOL_SIZE:
+          - 5
+          - 5
+          HIDDEN_LAYERS:
+          - 512
+          - 512
+          DROPOUT: 0.4
+        LocalizeParams:
+          IMG_SHAPE:
+          - 1
+          - 84
+          - 84
+    outs:
+    - path: out/evaluations/localize/plots/images
+      md5: 4ab63c4139f9b9c71209202474a6991c.dir
+      size: 67720
+      nfiles: 10
   evaluate_stack:
     cmd: python3 -m src.stack.evaluate
     deps:
     - path: data/prepared/stack
-      md5: be9e0489eee555b983478d25d4e9d7b9.dir
+      md5: 32e01685b5c418d2fc710ec60a9a3c7d.dir
       size: 221542631
       nfiles: 1
     - path: out/models/localize
-      md5: a508a7dcc23dbcf20300c64a08c4f9a4.dir
-      size: 33478747
+      md5: aca68242d8452298396cd7b0ea2b3818.dir
+      size: 33478619
       nfiles: 1
     - path: out/models/ocr
-      md5: 99dd402b19133b0b80d46404ca383e58.dir
-      size: 60617642
+      md5: d474b990a46bf517b42ca0a74c19c21f.dir
+      size: 60619231
       nfiles: 1
     - path: src/stack/evaluate.py
       md5: bdae368fef231ea3fb332a48b3f80bc5
       size: 5225
     - path: src/utils/evaluation.py
-      md5: f383b20033362e2c1d2de5d9b178eec4
-      size: 1638
+      md5: 5e10ef201d3a746c41cba0b2a07b04a6
+      size: 1654
     - path: src/utils/model.py
       md5: 1c37662db96a47d248e944a5c4930461
       size: 1199
@@ -368,109 +468,9 @@ stages:
           GRU_BLANK_CLASS: 36
     outs:
     - path: out/evaluations/stack/metrics.json
-      md5: a07a07dd64b38c0f78a46b2ca70a19a3
-      size: 37
+      md5: a42e63eef8befa6394831b648b206fd6
+      size: 22
     - path: out/evaluations/stack/plots/images
-      md5: 7511c60575d4a9f0b83c9494679fffc6.dir
-      size: 2304597
+      md5: a49f6a8cc0398c23b2b57a3e0f6d5b92.dir
+      size: 2145570
       nfiles: 11
-  evaluate_ocr:
-    cmd: python3 -m src.ocr.evaluate
-    deps:
-    - path: out/models/ocr
-      md5: 99dd402b19133b0b80d46404ca383e58.dir
-      size: 60617642
-      nfiles: 1
-    - path: src/ocr/evaluate.py
-      md5: 817a31e13242f39417a1e9fcb7a78089
-      size: 2676
-    - path: src/utils/evaluation.py
-      md5: f383b20033362e2c1d2de5d9b178eec4
-      size: 1638
-    - path: src/utils/model.py
-      md5: 1c37662db96a47d248e944a5c4930461
-      size: 1199
-    - path: src/utils/seed.py
-      md5: f94e3941728b5363f37f1139fc21cf24
-      size: 736
-    params:
-      params.py:
-        OCRModelParams:
-          MODEL_NAME: plate_ocr_v2
-          CONV_LAYERS:
-          - 64
-          - M
-          - 128
-          - M
-          - 256
-          - M
-          - 256
-          - M
-          GRU_AVGPOOL_SIZE:
-          - 18
-          - 18
-          GRU_HIDDEN_SIZE: 384
-          GRU_NUM_LAYERS: 2
-          GRU_DROPOUT: 0.5
-        OCRParams:
-          IMG_SHAPE:
-          - 1
-          - 84
-          - 84
-          MAX_LABEL_LENGTH: 7
-          GRU_NUM_CLASSES: 37
-          GRU_BLANK_CLASS: 36
-    outs:
-    - path: out/evaluations/ocr/plots/images
-      md5: 5df9bc7f66f6429b35f6b4c723979686.dir
-      size: 815220
-      nfiles: 10
-  evaluate_localize:
-    cmd: python3 -m src.localize.evaluate
-    deps:
-    - path: out/models/localize
-      md5: a508a7dcc23dbcf20300c64a08c4f9a4.dir
-      size: 33478747
-      nfiles: 1
-    - path: src/localize/evaluate.py
-      md5: 019a77986d597074e266d1ce2b835e2a
-      size: 1770
-    - path: src/utils/model.py
-      md5: 1c37662db96a47d248e944a5c4930461
-      size: 1199
-    - path: src/utils/preview.py
-      md5: a0538f1dd2c1ecc5184a13a746bda674
-      size: 573
-    - path: src/utils/seed.py
-      md5: f94e3941728b5363f37f1139fc21cf24
-      size: 736
-    params:
-      params.py:
-        LocalizeModelParams:
-          MODEL_NAME: plate_localizer_v3
-          CONV_LAYERS:
-          - 64
-          - M
-          - 128
-          - M
-          - 256
-          - M
-          - 512
-          - M
-          AVGPOOL_SIZE:
-          - 5
-          - 5
-          HIDDEN_LAYERS:
-          - 512
-          - 512
-          DROPOUT: 0.4
-        LocalizeParams:
-          IMG_SHAPE:
-          - 1
-          - 84
-          - 84
-    outs:
-    - path: out/evaluations/localize/plots/images
-      md5: 08a8b089ff20a1307822f20d7a54e309.dir
-      size: 67995
-      nfiles: 10
