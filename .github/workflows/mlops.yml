@@ -10,6 +10,7 @@ on:
 
 jobs:
   report:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Clone repo
@@ -84,4 +85,4 @@ jobs:
           echo '![](./stack_diff.png "Stack prediction")' >> report.md
           echo >> report.md
 
-          cml comment create report.md
+          cml comment create --target=pr --publish report.md
