@@ -31,6 +31,10 @@ jobs:
         uses: iterative/setup-dvc@v1
         with:
           version: "2.52.0"
+      - name: Setup CML
+        uses: iterative/setup-cml@v1
+        with:
+          version: "0.18.21"
       - name: Login to Google Cloud
         uses: "google-github-actions/auth@v1"
         with:
