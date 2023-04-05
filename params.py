@@ -13,7 +13,7 @@ class LocalizeParams:
 
 
 class PrepareLocalizeParams:
-    SEED = 25_03_2023
+    SEED = 25032023
     MAX_IMAGES = 100000
     TRAIN_SPLIT = 0.8
 
@@ -27,13 +27,13 @@ class LocalizeModelParams:
 
 
 class TrainLocalizeParams:
-    SEED = 25_03_2023
+    SEED = 25032023
     LR = 0.0005
     EPOCHS = 3
 
 
 class EvaluateLocalizeParams:
-    SEED = 25_03_2023
+    SEED = 25032023
 
 
 class OCRParams:
@@ -48,7 +48,7 @@ class OCRParams:
 
 
 class PrepareOCRParams:
-    SEED = 25_03_2023
+    SEED = 25032023
     MAX_IMAGES = 250000
     TRAIN_SPLIT = 0.8
     # the size of the image before cropping
@@ -66,22 +66,22 @@ class OCRModelParams:
 
 
 class TrainOCRParams:
-    SEED = 25_03_2023
+    SEED = 25032023
     LR = 0.00025
     EPOCHS = 2
 
 
 class EvaluateOCRParams:
-    SEED = 25_03_2023
+    SEED = 25032023
 
 
 class PrepareStackParams:
-    SEED = 25_03_2023
-    MAX_IMAGES = 5_000
+    SEED = 25032023
+    MAX_IMAGES = 5000
 
 
 class EvaluateStackParams:
-    SEED = 25_03_2023
+    SEED = 25032023
 
 
 # -- Python specific  --------------------------------------------------------
