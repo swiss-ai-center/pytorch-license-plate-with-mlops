@@ -33,7 +33,7 @@ def main():
     )
 
     loader_params = {
-        "multiprocessing": (not params.IS_LOCAL),
+        "multiprocessing": params.MULTIPROCESSING,
         "batch_size": params.BATCH_SIZE,
     }
     train_loader = dataset_utils.get_data_loader(

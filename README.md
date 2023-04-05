@@ -8,21 +8,21 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
       - [Clone the repository](#clone-the-repository)
+    - [Project Structure](#project-structure)
       - [Install the Python Dependencies](#install-the-python-dependencies)
-      - [Setup DVC Remote](#setup-dvc-remote)
-        - [Configure MinIO Credentials](#configure-minio-credentials)
-        - [Configure Your Own S3 Bucket](#configure-your-own-s3-bucket)
-  - [Project Structure](#project-structure)
+    - [Setup DVC](#setup-dvc)
+      - [Reset DVC Remote](#reset-dvc-remote)
+      - [Configure Your Own S3 Bucket](#configure-your-own-s3-bucket)
+      - [Track with DVC](#track-with-dvc)
+    - [Update the GitHub CI/CD](#update-the-github-cicd)
+  - [DVC Pipeline](#dvc-pipeline)
     - [DVC Stages](#dvc-stages)
-  - [Run the Pipeline Locally](#run-the-pipeline-locally)
-  - [Setup a Self-Hosted Runner with GitHub CI/CD](#setup-a-self-hosted-runner-with-github-cicd)
-    - [Manual Setup](#manual-setup)
-    - [With Docker](#with-docker)
-      - [Build and Run the Docker image](#build-and-run-the-docker-image)
-    - [With Kubernetes](#with-kubernetes)
-        - [Create a secret](#create-a-secret)
-        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
-  - [Run the Pipeline on a Self-Hosted Runner with CI/CD](#run-the-pipeline-on-a-self-hosted-runner-with-cicd)
+    - [Run the Pipeline](#run-the-pipeline)
+    - [View the Results](#view-the-results)
+      - [DVCLive](#dvclive)
+      - [TensorBoard](#tensorboard)
+    - [Push your Changes](#push-your-changes)
+      - [CML Report](#cml-report)
   - [Further Improvements](#further-improvements)
   - [Contributing](#contributing)
     - [Prerequisites](#prerequisites-1)
@@ -36,6 +36,15 @@
     - [PyTorch](#pytorch)
     - [CTC Loss](#ctc-loss)
     - [Data](#data)
+  - [Extra](#extra)
+    - [Setup a Self-Hosted Runner with GitHub CI/CD](#setup-a-self-hosted-runner-with-github-cicd)
+      - [Manual Setup](#manual-setup)
+      - [With Docker](#with-docker)
+        - [Build and Run the Docker image](#build-and-run-the-docker-image)
+      - [With Kubernetes](#with-kubernetes)
+        - [Create a secret](#create-a-secret)
+        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
+    - [Run the Pipeline on a Self-Hosted Runner with CI/CD](#run-the-pipeline-on-a-self-hosted-runner-with-cicd)
 
 ## Introduction
 
@@ -110,36 +119,7 @@ git clone https://github.com/leonardcser/pytorch-mlops-license-plate.git
 cd pytorch-mlops-license-plate
 ```
 
-#### Install the Python Dependencies
-
-```sh
-# Install the dependencies
-poetry install
-
-# Activate the virtual environment
-poetry shell
-```
-
-#### Setup DVC Remote
-
-You can use any DVC remote. In this project, we used an MinIO S3 bucket. If you would like to use the MiniIO bucket with the cache (which includes the models), you need to get in touch with the administrator of repository to get the credentials.
-
-##### Configure MinIO Credentials
-
-```sh
-dvc remote modify --local data access_key_id <minio key id>
-dvc remote modify --local data secret_access_key <minio access key>
-```
-
-> **Note:** Replace `<minio key id>` and `<minio access key>` with the credentials you received from the administrator.
-
-##### Configure Your Own S3 Bucket
-
-You can simply follow the instructions on the [DVC documentation](https://dvc.org/doc/command-reference/remote/add#supported-storage-types) to setup your own S3 bucket.
-
-> **Note:** Make sure you use the `--local` flag when configuring secrets. The default remote name is `data`, but you can change it to whatever you want. The configuration will be stored in the `.dvc/config` and `.dvc/config.local` files.
-
-## Project Structure
+### Project Structure
 
 ```txt
 .
@@ -171,6 +151,63 @@ You can simply follow the instructions on the [DVC documentation](https://dvc.or
     └── utils
 ```
 
+#### Install the Python Dependencies
+
+```sh
+# Install the dependencies
+poetry install
+
+# Activate the virtual environment
+poetry shell
+```
+
+### Setup DVC
+
+You can use any DVC remote. In this project, we used a Google S3 bucket. If you would like to use the bucket with the cache (which includes the models), you need to get in touch with the administrator of repository to get the credentials.
+
+#### Reset DVC Remote
+
+First, you need to reset the DVC remote to your own S3 bucket. You can do this by removing the `.dvc` folder and the `dvc.lock` file.
+
+```sh
+rm -rf .dvc
+rm dvc.lock
+```
+
+You also need to remove all the files/folders tracked by DVC:
+
+```sh
+rm data/datasets.dvc
+```
+
+Then, you can initialize DVC with the following command:
+
+```sh
+dvc init
+```
+
+#### Configure Your Own S3 Bucket
+
+You can simply follow the instructions on the [DVC documentation](https://dvc.org/doc/command-reference/remote/add#supported-storage-types) to setup your own S3 bucket.
+
+> **Note:** Make sure you use the `--local` flag when configuring secrets. The configuration will be stored in the `.dvc/config` and `.dvc/config.local` files.
+
+#### Track with DVC
+
+For this project, you will need to track the `data/datasets` folder. You can do this by running the following command:
+
+```sh
+dvc add data/datasets
+```
+
+### Update the GitHub CI/CD
+
+You have to also modify the GitHub CI/CD located at `.github/workflows/mlops.yml` to authenticate with your own S3 bucket. In our case, we used Google Cloud Storage.
+
+## DVC Pipeline
+
+In this section, you will learn how to run the pipeline.
+
 ### DVC Stages
 
 The project is divided into 6 stages:
@@ -186,106 +223,81 @@ The project is divided into 6 stages:
 
 You can preview the pipeline with the following command:
 
-![](media/dag.png)
+![DVC dag command output](media/dag.png)
 
-## Run the Pipeline Locally
+### Run the Pipeline
 
-In this section, you will learn how to run the pipeline locally.
+The params for DVC are separated into two files:
 
-Before running the pipeline, you need to create an `.env.local` file in the root of the project. In this file, you need to define the following environment variable:
+- `params.yaml` - global parameters
+- `params.py` - stage specific parameters
+
+The `params.py` file is a Python file that is executed by DVC. It also allows you to use the variables defined in that file with type hints for a better experience.
+
+For testing the pipeline without needing to train the models for a long time, you can reduce the number of samples and epochs with the following command:
 
 ```sh
-IS_LOCAL=1
+dvc exp run -S "params.py:MULTIPROCESSING=False" \
+  -S "params.py:PrepareLocalizeParams.MAX_IMAGES=256" \
+  -S "params.py:PrepareOCRParams.MAX_IMAGES=256" \
+  -S "params.py:PrepareStackParams.MAX_IMAGES=256" \
+  -S "params.py:TrainLocalizeParams.EPOCHS=1" \
+  -S "params.py:TrainOCRParams.EPOCHS=1"
 ```
 
-This environment variable is modifies the `params.py` file to use much smaller datasets, which allows you to run the pipeline locally.
+DVC experiments are stored automatically saved once they are run. You can list all the experiment results with the following command:
 
-To run the DVC pipeline, you can use the following command:
+```sh
+dvc exp show
+```
+
+To reproduce the DVC pipeline using the parameters defined in the `params.py` file, you can run the following command:
 
 ```sh
 dvc repro
 ```
 
-## Setup a Self-Hosted Runner with GitHub CI/CD
+### View the Results
 
-In this section, you will learn how to run the pipeline on a self-hosted runner with GitHub Actions.
+#### DVCLive
 
-You can find below three different ways of setting up the self-hosted runner with GitHub Actions. We used the third option, as it allows us to use a GPU machine.
+TODO
 
-### Manual Setup
+#### TensorBoard
 
-To set up the self-hosted runner manually, you can use [CML](https://cml.dev). CML allows you to setup a self-hosted runner on any machine.
+TODO
 
-To use CML, you first need to install CML on the machine you would like to use as a self-hosted runner. You can find the installation instructions on the [CML documentation](https://cml.dev/doc/self-hosted-runners#install-cml-on-your-runner).
+### Push your Changes
 
-You can then run the following command to start the runner:
-
-```sh
-cml runner launch \
-  --repo=<repository url>, \
-  --token=<github personal access token>, \
-  --labels=cml-runner-gpu, \
-  --idle-timeout=never
-```
-
-> **Note:** Replace the `<repository url>` and `<github personal access token>` with the appropriate values.
-
-### With Docker
-
-You can also run the CML runner in a Docker image in order to avoid installing CML, and all the dependencies, on the machine.
-
-#### Build and Run the Docker image
+Once you are satisfied with the results, you can promote the experiment to a new Git branch and push your changes:
 
 ```sh
-docker-compose up --build
+dvc exp branch <experiment name> <branch name>
 ```
 
-### With Kubernetes
+> **Note:** You can get the experiment name from the output of the `dvc exp run` command.
 
-Finally, you can also run the CML runner in a Kubernetes Pod. This is the method we used in this project.
-
-##### Create a secret
+When you are satisfied with the results, you can first push the changes to the DVC remote:
 
 ```sh
-echo -n "Enter the personal access token: " &&
-  read -s ACCESS_TOKEN && \
-    kubectl create secret generic gh-pat-secret --from-literal=personal_access_token=$ACCESS_TOKEN
-  unset ACCESS_TOKEN
+dvc push
 ```
 
-This command does the following:
-
-- Uses the `read` command to read the personal access token from the terminal so that it is not stored in the shell history.
-- Uses the `kubectl create secret` command to create a secret named `gh-pat-secret` with the personal access token.
-- Uses the `unset` command to unset the `ACCESS_TOKEN` environment variable.
-
-> **Note:** Replace `<personal access token>` with your GitHub personal access token.
-
-##### Create the Kubernetes Pod
+Then, you can push the changes to the Git remote:
 
 ```sh
-kubectl apply -f kubernetes/cml-runner.yml
+git add .
+git commit -m "<your commit message>"
+git push origin <branch name>
 ```
 
-This command create a Kubernetes Pod named `cml-runner` with the label `cml-runner-gpu`.
-
-## Run the Pipeline on a Self-Hosted Runner with CI/CD
-
-Now that you have a self-hosted runner, you can run the pipeline on it.
-
-The workflow is the following:
-
-- You make changes to `params.py`
-- You commit the changes
-- You push the changes to GitHub
-- CML detects the changes
-- DVC runs the pipeline
-- CML creates a comment on the commit with the results
+#### CML Report
 
 ## Further Improvements
 
 Below are some ideas for further improvements:
 
+- Add a fine-tuning stage for the localization model
 - Optimize the dataset generation (this is the current bottleneck)
 - Optimize the model evaluation
 - Train with PyTorch Lightning
@@ -386,3 +398,81 @@ This repository uses the following VSCode:
 - **Car license plate dataset**
 
   https://www.kaggle.com/datasets/aslanahmedov/number-plate-detection?select=images
+
+## Extra
+
+### Setup a Self-Hosted Runner with GitHub CI/CD
+
+In this section, you will learn how to run the pipeline on a self-hosted runner with GitHub Actions.
+
+You can find below three different ways of setting up the self-hosted runner with GitHub Actions. We used the third option, as it allows us to use a GPU machine.
+
+#### Manual Setup
+
+To set up the self-hosted runner manually, you can use [CML](https://cml.dev). CML allows you to setup a self-hosted runner on any machine.
+
+To use CML, you first need to install CML on the machine you would like to use as a self-hosted runner. You can find the installation instructions on the [CML documentation](https://cml.dev/doc/self-hosted-runners#install-cml-on-your-runner).
+
+You can then run the following command to start the runner:
+
+```sh
+cml runner launch \
+  --repo=<repository url>, \
+  --token=<github personal access token>, \
+  --labels=cml-runner-gpu, \
+  --idle-timeout=never
+```
+
+> **Note:** Replace the `<repository url>` and `<github personal access token>` with the appropriate values.
+
+#### With Docker
+
+You can also run the CML runner in a Docker image in order to avoid installing CML, and all the dependencies, on the machine.
+
+##### Build and Run the Docker image
+
+```sh
+docker-compose up --build
+```
+
+#### With Kubernetes
+
+Finally, you can also run the CML runner in a Kubernetes Pod. This is the method we used in this project.
+
+##### Create a secret
+
+```sh
+echo -n "Enter the personal access token: " &&
+  read -s ACCESS_TOKEN && \
+    kubectl create secret generic gh-pat-secret --from-literal=personal_access_token=$ACCESS_TOKEN
+  unset ACCESS_TOKEN
+```
+
+This command does the following:
+
+- Uses the `read` command to read the personal access token from the terminal so that it is not stored in the shell history.
+- Uses the `kubectl create secret` command to create a secret named `gh-pat-secret` with the personal access token.
+- Uses the `unset` command to unset the `ACCESS_TOKEN` environment variable.
+
+> **Note:** Replace `<personal access token>` with your GitHub personal access token.
+
+##### Create the Kubernetes Pod
+
+```sh
+kubectl apply -f kubernetes/cml-runner.yml
+```
+
+This command create a Kubernetes Pod named `cml-runner` with the label `cml-runner-gpu`.
+
+### Run the Pipeline on a Self-Hosted Runner with CI/CD
+
+Now that you have a self-hosted runner, you can run the pipeline on it.
+
+The workflow is the following:
+
+- You make changes to `params.py`
+- You commit the changes
+- You push the changes to GitHub
+- CML detects the changes
+- DVC runs the pipeline
+- CML creates a comment on the commit with the results

@@ -13,35 +13,6 @@ files = [
 ]
 
 [[package]]
-name = "accelerate"
-version = "0.17.1"
-description = "Accelerate"
-category = "main"
-optional = false
-python-versions = ">=3.7.0"
-files = [
-    {file = "accelerate-0.17.1-py3-none-any.whl", hash = "sha256:4d1f049c32498694c764cfe657cb4ead523e0eda90ed95e21bb1806ac06ab80b"},
-    {file = "accelerate-0.17.1.tar.gz", hash = "sha256:f8ad36e1ce186960bb975bd1627dcb0962c2046658d3ec1617583ebdc598f599"},
-]
-
-[package.dependencies]
-numpy = ">=1.17"
-packaging = ">=20.0"
-psutil = "*"
-pyyaml = "*"
-torch = ">=1.4.0"
-
-[package.extras]
-dev = ["black (>=23.1,<24.0)", "datasets", "deepspeed", "evaluate", "hf-doc-builder (>=0.3.0)", "parameterized", "pytest", "pytest-subtests", "pytest-xdist", "rich", "ruff (>=0.0.241)", "scikit-learn", "scipy", "tqdm", "transformers"]
-quality = ["black (>=23.1,<24.0)", "hf-doc-builder (>=0.3.0)", "ruff (>=0.0.241)"]
-rich = ["rich"]
-sagemaker = ["sagemaker"]
-test-dev = ["datasets", "deepspeed", "evaluate", "scikit-learn", "scipy", "tqdm", "transformers"]
-test-prod = ["parameterized", "pytest", "pytest-subtests", "pytest-xdist"]
-test-trackers = ["comet-ml", "tensorboard", "wandb"]
-testing = ["datasets", "deepspeed", "evaluate", "parameterized", "pytest", "pytest-subtests", "pytest-xdist", "scikit-learn", "scipy", "tqdm", "transformers"]
-
-[[package]]
 name = "aiohttp"
 version = "3.8.4"
 description = "Async http client/server framework (asyncio)"
@@ -2959,21 +2930,6 @@ files = [
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
-name = "python-dotenv"
-version = "1.0.0"
-description = "Read key-value pairs from a .env file and set them as environment variables"
-category = "main"
-optional = false
-python-versions = ">=3.8"
-files = [
-    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
-    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
-]
-
-[package.extras]
-cli = ["click (>=5.0)"]
-
-[[package]]
 name = "pytz"
 version = "2023.3"
 description = "World timezone definitions, modern and historical"
@@ -3886,4 +3842,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "6a6830da1e3c767c4ca18ae3549dc2b9365331adb394095b723c88d5166462bd"
+content-hash = "d9c808784d5146a56a7e3df9be2859caa9a20270a69d088af662bc9ec532e163"

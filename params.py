@@ -1,13 +1,9 @@
-import os
 import typing
 
 import yaml
-from dotenv import load_dotenv
-
-load_dotenv(".env.local")
-
 
 # -- DVC params --------------------------------------------------------------
+MULTIPROCESSING = True
 BATCH_SIZE = 32
 
 
@@ -18,7 +14,7 @@ class LocalizeParams:
 
 class PrepareLocalizeParams:
     SEED = 25_03_2023
-    MAX_IMAGES = 100_000
+    MAX_IMAGES = 100000
     TRAIN_SPLIT = 0.8
 
 
@@ -53,7 +49,7 @@ class OCRParams:
 
 class PrepareOCRParams:
     SEED = 25_03_2023
-    MAX_IMAGES = 250_000
+    MAX_IMAGES = 250000
     TRAIN_SPLIT = 0.8
     # the size of the image before cropping
     IMG_SIZE = (256, 256)
@@ -86,30 +82,6 @@ class PrepareStackParams:
 
 class EvaluateStackParams:
     SEED = 25_03_2023
-
-
-IS_LOCAL = bool(int(os.environ.get("IS_LOCAL", False)))
-GLOB_SEED = os.environ.get("GLOB_SEED", None)
-
-if IS_LOCAL:
-    # MAX_IMAGES should respect MAX_IMAGES * TRAIN_SPLIT > BATCH_SIZE as the
-    # last batch will be dropped if it is smaller than BATCH_SIZE
-    PrepareLocalizeParams.MAX_IMAGES = 256
-    PrepareOCRParams.MAX_IMAGES = 256
-    PrepareStackParams.MAX_IMAGES = 256
-    TrainLocalizeParams.EPOCHS = 1
-    TrainOCRParams.EPOCHS = 1
-
-
-if GLOB_SEED is not None:
-    PrepareLocalizeParams.SEED = int(GLOB_SEED)
-    TrainLocalizeParams.SEED = int(GLOB_SEED)
-    EvaluateLocalizeParams.SEED = int(GLOB_SEED)
-    PrepareOCRParams.SEED = int(GLOB_SEED)
-    TrainOCRParams.SEED = int(GLOB_SEED)
-    EvaluateOCRParams.SEED = int(GLOB_SEED)
-    PrepareStackParams.SEED = int(GLOB_SEED)
-    EvaluateStackParams.SEED = int(GLOB_SEED)
 
 
 # -- Python specific  --------------------------------------------------------
