@@ -1,8 +1,12 @@
-name: CML
+name: CML CI
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
+env:
+  CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+  CI_COMMIT_AUTHOR: Continuous Integration
 
 jobs:
   train-and-report:
@@ -11,10 +15,12 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v3
         with:
+          # Fetch all history for DVC
           fetch-depth: 0
-      - name: Install depedencies
-        run: |
-          pip install -r requirements/requirements.txt
+      - name: Install poetry
+        run: pipx install poetry==1.4.0
+      - name: Install dependencies
+        run: poetry install --without=dev
       - name: Set up DVC credentials
         run: |
           dvc remote modify --local data access_key_id ${{ secrets.MINIO_KEY_ID }}
@@ -36,6 +42,41 @@ jobs:
           echo "# Metrics workflow vs. main" >> report.md
           echo >> report.md
           dvc metrics diff main --show-md >> report.md
+          echo >> report.md
+
+          # Create plots
+          echo "# Models" >> report.md
+          echo >> report.md
+
+          # Compare ocr images to main branch
+          echo "## Localize model prediction" >> report.md
+          echo >> report.md
+          dvc plots diff \
+            --targets out/evaluations/localize/plots/images/pred_0.png \
+            --show-vega main > vega.json
+          vl2png vega.json > localize_diff.png
+          echo '![](./localize_diff "Localize model prediction")' >> report.md
+          echo >> report.md
+
+          # Compare ocr images to main branch
+          echo "## OCR model prediction" >> report.md
+          echo >> report.md
+          dvc plots diff \
+            --targets out/evaluations/ocr/plots/images/pred_0.png \
+            --show-vega main > vega.json
+          vl2png vega.json > ocr_diff.png
+          echo '![](./ocr_diff.png "OCR model prediction")' >> report.md
+          echo >> report.md
+          echo >> report.md
+
+          # Compare stack images to main branch
+          echo "## Stack prediction" >> report.md
+          echo >> report.md
+          dvc plots diff \
+            --targets out/evaluations/stack/plots/images/stack_pred_0.png \
+            --show-vega main > vega.json
+          vl2png vega.json > stack_diff.png
+          echo '![](./stack_diff.png "Stack prediction")' >> report.md
           echo >> report.md
 
           cml comment create report.md

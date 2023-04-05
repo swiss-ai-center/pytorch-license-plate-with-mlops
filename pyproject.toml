@@ -1,3 +1,41 @@
+# -- Poetry -------------------------------------------
+[tool.poetry]
+name = "pytorch-mlops-license-plate"
+version = "0.1.0"
+description = "PyTorch MLOps License Plate Recognition"
+authors = ["Leonard <leocser362@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+python-dotenv = ">=1.0.0,<1.1"
+torch = ">=2.0.0,<2.1"
+torchvision = ">=0.15.1,<0.16"
+torchdata = ">=0.6.0,<0.7"
+accelerate = ">=0.17.1,<0.18"
+scipy = ">=1.10.1,<1.11"
+opencv-python = ">=4.7.0.72,<4.8"
+tensorboard = ">=2.11.2,<2.12"
+dvc = {version = ">=2.51.0,<2.60", extras = ["s3"]}
+dvclive = ">=2.5.1,<2.6"
+
+
+[tool.poetry.group.dev.dependencies]
+# Linting
+flake8 = ">=5.0.4,<5.1"
+flake8-quotes = ">=3.3.1,<3.4"
+flake8-comprehensions = ">=3.10.0,<3.11"
+flake8-mutable = ">=1.2.0,<1.3"
+flake8-blind-except = ">=0.2.1,<0.3"
+flake8-builtins = ">=1.5.3,<1.6"
+# Formatting
+black = ">=22.6.0,<22.7"
+pre-commit = ">=2.20.0,<2.30"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# -- Black --------------------------------------------
 [tool.black]
 line-length = 79
 exclude = '''

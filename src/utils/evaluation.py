@@ -32,9 +32,9 @@ def live_log_img_pred(
     )
     # add border to image depending if the prediction is correct
     color = (
-        (0, 255, 0)
+        (0, 255, 0)  # green
         if number_pred == number and canton_pred == canton
-        else (0, 0, 255)
+        else (255, 0, 0)  # red
     )
     img = cv2.copyMakeBorder(
         img,

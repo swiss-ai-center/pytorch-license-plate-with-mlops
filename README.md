@@ -32,6 +32,10 @@
       - [Install the Python Dev Dependencies](#install-the-python-dev-dependencies)
     - [Markdown Linting and Formatting](#markdown-linting-and-formatting)
   - [Resources](#resources)
+    - [Implementations](#implementations)
+    - [PyTorch](#pytorch)
+    - [CTC Loss](#ctc-loss)
+    - [Data](#data)
 
 ## Introduction
 
@@ -46,10 +50,10 @@ The approach was to train two models:
 
 The first two images are the results of the individual models, localize and OCR respectively. The third image shows the result of the combination of both models to crop the image to the license plate and then run the OCR model on the cropped image.
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 1rem; margin-bottom: 1rem">
+<div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: start; gap: 1rem; margin-bottom: 1rem">
   <img src="out/evaluations/localize/plots/images/pred_0.png" width="200" height="200" />
   <img src="out/evaluations/ocr/plots/images/pred_0.png" width="200" />
-  <img src="out/evaluate/../evaluations/stack/plots/images/stack_pred_0.png" width="415" />
+  <img src="out/evaluations/stack/plots/images/stack_pred_0.png" width="415" />
 </div>
 
 We achieved an accuracy of around 84% for the end-to-end plate detection.
@@ -92,7 +96,8 @@ The below are some generated images for the OCR model.
 
 ### Prerequisites
 
-- Python 3.8
+- Python >=3.8<3.12
+- Poetry >=1.3.0
 - An S3 bucket to store the DVC remote
 
 ### Installation
@@ -108,14 +113,11 @@ cd pytorch-mlops-license-plate
 #### Install the Python Dependencies
 
 ```sh
-# Create the virtual environment
-python -m venv .venv
+# Install the dependencies
+poetry install
 
 # Activate the virtual environment
-source .venv/bin/activate
-
-# Install the dependencies
-pip install -r requirements/requirements.txt
+poetry shell
 ```
 
 #### Setup DVC Remote
@@ -223,7 +225,7 @@ cml runner launch \
   --repo=<repository url>, \
   --token=<github personal access token>, \
   --labels=cml-runner-gpu, \
-  --idle-timeout=neve"
+  --idle-timeout=never
 ```
 
 > **Note:** Replace the `<repository url>` and `<github personal access token>` with the appropriate values.
@@ -293,7 +295,8 @@ Below are some ideas for further improvements:
 
 ### Prerequisites
 
-- Python 3.9
+- Python >=3.8<3.12
+- Poetry >=1.3.0
 
 ### Installation
 
@@ -316,15 +319,11 @@ You can learn more about `pre-commit` [here](https://pre-commit.com/).
 #### Install the Python Dev Dependencies
 
 ```sh
-# Create the virtual environment
-python3 -m venv .venv
+# Install the dependencies
+poetry install
 
 # Activate the virtual environment
-source .venv/bin/activate
-
-# Install the dependencies and upgrade pip
-pip install -r src/requirements-dev.txt
-pip install --upgrade pip
+poetry shell
 ```
 
 ### Markdown Linting and Formatting
@@ -336,13 +335,17 @@ This repository uses the following VSCode:
 
 ## Resources
 
-- **Tensorflow implementation**
+### Implementations
+
+- **Tensorflow implementation bounding box detection**
 
   https://pyimagesearch.com/2020/10/05/object-detection-bounding-box-regression-with-keras-tensorflow-and-deep-learning/
 
-- **Inspiration dataset**
+- **Keras - OCR model for reading Captchas**
 
-  https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
+  https://keras.io/examples/vision/captcha_ocr/
+
+### PyTorch
 
 - **Training with PyTorch**
 
@@ -355,6 +358,26 @@ This repository uses the following VSCode:
 - **PyTorch Optimization**
 
   https://pytorch.org/tutorials/recipes/recipes/tuning_guide.html
+
+- **Multi-Digit Sequence Recognition**
+
+  https://medium.com/swlh/multi-digit-sequence-recognition-with-crnn-and-ctc-loss-using-pytorch-framework-269a7aca2a6
+
+### CTC Loss
+
+- **An Intuitive Explanation of Connectionist Temporal Classification**
+
+  https://towardsdatascience.com/intuitively-understanding-connectionist-temporal-classification-3797e43a86c
+
+- **Understanding CTC loss for speech recognition**
+
+  https://voidful.medium.com/understanding-ctc-loss-for-speech-recognition-a16a3ef4da92
+
+### Data
+
+- **Inspiration dataset**
+
+  https://www.kaggle.com/datasets/tbjorklund/annotated-synthetic-license-plates
 
 - **Swiss number plate generator**
 
