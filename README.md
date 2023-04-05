@@ -20,16 +20,16 @@
     - [With Docker](#with-docker)
       - [Build and Run the Docker image](#build-and-run-the-docker-image)
     - [With Kubernetes](#with-kubernetes)
-      - [Create a secret](#create-a-secret)
-      - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
+        - [Create a secret](#create-a-secret)
+        - [Create the Kubernetes Pod](#create-the-kubernetes-pod)
   - [Run the Pipeline on a Self-Hosted Runner with CI/CD](#run-the-pipeline-on-a-self-hosted-runner-with-cicd)
   - [Further Improvements](#further-improvements)
   - [Contributing](#contributing)
     - [Prerequisites](#prerequisites-1)
     - [Installation](#installation-1)
       - [Clone the repository](#clone-the-repository-1)
-      - [Install pre-commit](#install-pre-commit)
       - [Install the Python Dev Dependencies](#install-the-python-dev-dependencies)
+      - [Install pre-commit](#install-pre-commit)
     - [Markdown Linting and Formatting](#markdown-linting-and-formatting)
   - [Resources](#resources)
     - [Implementations](#implementations)
@@ -308,14 +308,6 @@ git clone git@github.com:leonardcser/pytorch-mlops-license-plate.git
 cd pytorch-mlops-license-plate
 ```
 
-#### Install pre-commit
-
-```sh
-pre-commit install
-```
-
-You can learn more about `pre-commit` [here](https://pre-commit.com/).
-
 #### Install the Python Dev Dependencies
 
 ```sh
@@ -325,6 +317,14 @@ poetry install
 # Activate the virtual environment
 poetry shell
 ```
+
+#### Install pre-commit
+
+```sh
+pre-commit install
+```
+
+You can learn more about `pre-commit` [here](https://pre-commit.com/).
 
 ### Markdown Linting and Formatting
 
