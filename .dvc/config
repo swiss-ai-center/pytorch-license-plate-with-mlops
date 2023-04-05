@@ -1,4 +1,4 @@
 [core]
     remote = data
 ['remote "data"']
-    url = gs://pytorch-license-plate-data/dvcstore
+    url = gs://pytorchlicenseplate/dvcstore
