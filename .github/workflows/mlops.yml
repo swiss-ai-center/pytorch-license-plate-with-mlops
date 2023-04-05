@@ -2,6 +2,10 @@ name: CML CI
 on:
   push:
     branches: [main]
+
+  # Runs on pull requests
+  pull_request:
+
   workflow_dispatch:
 
 jobs:
@@ -15,13 +19,18 @@ jobs:
           fetch-depth: 0
       - name: Install poetry
         run: pipx install poetry==1.4.0
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "poetry"
       - name: Install dependencies
         run: poetry install --without=dev
       - name: Login to Google Cloud
         uses: "google-github-actions/auth@v1"
         with:
           credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
-      - name: Run DVC pipeline
+      - name: Download DVC cache
         run: |
           dvc pull
       - name: Create CML report
