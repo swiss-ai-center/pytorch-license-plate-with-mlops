@@ -251,18 +251,6 @@ DVC experiments are stored automatically saved once they are run. You can list a
 dvc exp show
 ```
 
-To promote an experiment to a new Git branch, you can run the following command:
-
-```sh
-dvc exp branch <experiment name> <branch name>
-```
-
-To reproduce the DVC pipeline using the parameters defined in the `params.py` file, you can run the following command:
-
-```sh
-dvc repro
-```
-
 ### View the Results
 
 #### DVCLive
@@ -293,18 +281,10 @@ dvc exp branch <experiment name> <branch name>
 
 > **Note:** You can get the experiment name from the output of the `dvc exp run` command.
 
-When you are satisfied with the results, you can first push the changes to the DVC remote:
+When you are satisfied with the results, you can push the changes to the DVC remote. This will also push the changes to the Git remote.
 
 ```sh
 dvc push
-```
-
-Then, you can push the changes to the Git remote:
-
-```sh
-git add .
-git commit -m "<your commit message>"
-git push origin <branch name>
 ```
 
 #### CML Report
