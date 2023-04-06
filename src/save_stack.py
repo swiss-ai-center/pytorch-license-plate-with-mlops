@@ -6,7 +6,6 @@ from mlem.api import save
 from PIL import Image
 from torch import Tensor, nn
 from torchvision import transforms
-from torchvision.io import read_image
 
 import params
 import src.utils.model as model_utils
@@ -105,7 +104,7 @@ model = SwissLicensePlateModelStack(
     locize_model=localize_model, ocr_model=ocr_model
 )
 
-img = read_image("sample.png")
+img = torch.zeros((3, 256, 256), dtype=torch.uint8)
 save(
     obj=model,
     path="models/model_stack",

@@ -23,7 +23,9 @@
       - [DVCLive](#dvclive)
       - [TensorBoard](#tensorboard)
     - [Push your Changes](#push-your-changes)
-      - [CML Report](#cml-report)
+  - [DVC with CML](#dvc-with-cml)
+    - [Open a Pull Request](#open-a-pull-request)
+  - [Serve the Model with MLEM](#serve-the-model-with-mlem)
   - [Further Improvements](#further-improvements)
   - [Contributing](#contributing)
     - [Prerequisites](#prerequisites-1)
@@ -292,7 +294,27 @@ When you are satisfied with the results, you can push the changes to the DVC rem
 dvc push
 ```
 
-#### CML Report
+## DVC with CML
+
+### Open a Pull Request
+
+You can open a pull request for the branch you created. GitHub will run the pipeline and CML will comment on your pull request with the differences between main and your branch.
+
+If you are happy with the results, you can merge the pull request.
+
+## Serve the Model with MLEM
+
+To serve the latest model, you can run the following commands:
+
+```sh
+# Save the model stack for MLEM
+python3 -m src.save_stack
+
+# Serve the model
+python3 -m src.serve
+```
+
+You can the open the browser and go to `http://localhost:80` to test the model.
 
 ## Further Improvements
 
@@ -300,7 +322,7 @@ Below are some ideas for further improvements:
 
 - Add a fine-tuning stage for the localization model
 - Optimize the dataset generation (this is the current bottleneck)
-- Optimize the model evaluation
+- Optimize the model evaluation (abstract the code)
 - Train with PyTorch Lightning
 - Add early stopping
 
