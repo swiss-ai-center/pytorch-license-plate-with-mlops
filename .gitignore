@@ -2,8 +2,6 @@
 .DS_Store
 
 ## Python
-# Environments
-.venv
 
 # Variables
 .env.local

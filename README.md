@@ -8,6 +8,7 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
       - [Clone the repository](#clone-the-repository)
+      - [Download the Dataset](#download-the-dataset)
     - [Project Structure](#project-structure)
       - [Install the Python Dependencies](#install-the-python-dependencies)
     - [Setup DVC](#setup-dvc)
@@ -119,14 +120,28 @@ git clone https://github.com/leonardcser/pytorch-mlops-license-plate.git
 cd pytorch-mlops-license-plate
 ```
 
+#### Download the Dataset
+
+The dataset for this project can be found under the `data` branch. You can download it using the following command:
+
+```sh
+wget https://github.com/leonardcser/pytorch-mlops-license-plate/archive/refs/heads/data.zip -O data.zip
+
+unzip data.zip
+
+# Move the data to the correct folder
+mv pytorch-mlops-license-plate-data/datasets data/datasets
+
+# Remove the zip and the folder
+rm data.zip && rm -r pytorch-mlops-license-plate-data/
+```
+
 ### Project Structure
 
 ```txt
 .
 ├── data (1) datasets path
-│   ├── datasets
-│   ├── datasets.dvc
-│   └── prepared
+│   └── datasets
 ├── dvc.yaml
 ├── out (2) DVC and DVCLive outputs path
 │   ├── checkpoints
@@ -136,9 +151,6 @@ cd pytorch-mlops-license-plate
 │   └── runs
 ├── params.py (3) Custom parameters file in Python for DVC
 ├── params.yaml (4) Global parameters file for DVC
-├── requirements
-│   ├── requirements-dev.txt
-│   └── requirements.txt
 └── src (5) Source code devided into modules, one module per DVC stage
     ├── datasets
     ├── generators
@@ -167,17 +179,10 @@ You can use any DVC remote. In this project, we used a Google S3 bucket. If you 
 
 #### Reset DVC Remote
 
-First, you need to reset the DVC remote to your own S3 bucket. You can do this by removing the `.dvc` folder and the `dvc.lock` file.
+First, you need to reset the DVC remote to your own S3 bucket. You can do this resetting DVC with:
 
 ```sh
-rm -rf .dvc
-rm dvc.lock
-```
-
-You also need to remove all the files/folders tracked by DVC:
-
-```sh
-rm data/datasets.dvc
+dvc destroy
 ```
 
 Then, you can initialize DVC with the following command:
