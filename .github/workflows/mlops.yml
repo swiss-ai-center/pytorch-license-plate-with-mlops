@@ -79,8 +79,8 @@ jobs:
           # echo "## Stack prediction" >> report.md
           # echo >> report.md
           # dvc plots diff \
-            --target out/evaluations/stack/plots/images/stack_pred_0.png \
-            --show-vega main > vega.json
+          # --target out/evaluations/stack/plots/images/stack_pred_0.png \
+          # --show-vega main > vega.json
           # vl2png vega.json > stack_diff.png
           # echo '![](./stack_diff.png "Stack prediction")' >> report.md
           # echo >> report.md
