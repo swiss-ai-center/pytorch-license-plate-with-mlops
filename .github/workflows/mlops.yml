@@ -1,7 +1,8 @@
 name: CML CI
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
   # Runs on pull requests
   pull_request:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  report:
+  report-pr:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -18,19 +19,14 @@ jobs:
         with:
           # Fetch all history for DVC
           fetch-depth: 0
-      - name: Install poetry
-        run: pipx install poetry==1.4.0
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "poetry"
-      - name: Install dependencies
-        run: poetry install --without=dev
       - name: Setup DVC
         uses: iterative/setup-dvc@v1
         with:
           version: "2.52.0"
+      - name: Setup CML
+        uses: iterative/setup-cml@v1
+        with:
+          version: "0.18.21"
       - name: Login to Google Cloud
         uses: "google-github-actions/auth@v1"
         with:
@@ -58,35 +54,35 @@ jobs:
           echo "# Models" >> report.md
           echo >> report.md
 
-          # Compare ocr images to main branch
-          echo "## Localize model prediction" >> report.md
+          # Compare localize images to main branch
+          echo "## Localize Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
-            --targets out/evaluations/localize/plots/images/pred_0.png \
+            --target out/runs/localize/plots/metrics/validation/loss.tsv \
             --show-vega main > vega.json
           vl2png vega.json > localize_diff.png
-          echo '![](./localize_diff "Localize model prediction")' >> report.md
+          echo '![](./localize_diff.png "Localize model val loss")' >> report.md
           echo >> report.md
 
           # Compare ocr images to main branch
-          echo "## OCR model prediction" >> report.md
+          echo "## OCR Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
-            --targets out/evaluations/ocr/plots/images/pred_0.png \
+            --target out/runs/ocr/plots/metrics/validation/loss.tsv \
             --show-vega main > vega.json
           vl2png vega.json > ocr_diff.png
-          echo '![](./ocr_diff.png "OCR model prediction")' >> report.md
-          echo >> report.md
+          echo '![](./ocr_diff.png "OCR model val loss")' >> report.md
           echo >> report.md
 
+          # NOTE: dvc plots diff with images does not work with vega-lite
           # Compare stack images to main branch
-          echo "## Stack prediction" >> report.md
-          echo >> report.md
-          dvc plots diff \
-            --targets out/evaluations/stack/plots/images/stack_pred_0.png \
-            --show-vega main > vega.json
-          vl2png vega.json > stack_diff.png
-          echo '![](./stack_diff.png "Stack prediction")' >> report.md
-          echo >> report.md
+          # echo "## Stack prediction" >> report.md
+          # echo >> report.md
+          # dvc plots diff \
+          # --target out/evaluations/stack/plots/images/stack_pred_0.png \
+          # --show-vega main > vega.json
+          # vl2png vega.json > stack_diff.png
+          # echo '![](./stack_diff.png "Stack prediction")' >> report.md
+          # echo >> report.md
 
           cml comment create --target=pr --publish report.md
