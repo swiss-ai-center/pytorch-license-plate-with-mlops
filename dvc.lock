@@ -32,23 +32,23 @@ stages:
           - 84
         PrepareLocalizeParams:
           SEED: 25032023
-          MAX_IMAGES: 256
+          MAX_IMAGES: 100000
           TRAIN_SPLIT: 0.8
     outs:
     - path: data/prepared/localize
-      md5: ea5ebff6ef5f8f0fe28eae0a75c09fec.dir
-      size: 443085970
+      md5: f7ca47d2af1c94e6ad950b775da70545.dir
+      size: 443454354
       nfiles: 2
     - path: out/prepared/localize/plots/images
-      md5: 3245740c012c1e4f889a90571ef3de91.dir
-      size: 19887
+      md5: caa4519fd06352333940dc634f3520b6.dir
+      size: 17470
       nfiles: 5
   train_localize:
     cmd: python3 -m src.localize.train
     deps:
     - path: data/prepared/localize
-      md5: ea5ebff6ef5f8f0fe28eae0a75c09fec.dir
-      size: 443085970
+      md5: f7ca47d2af1c94e6ad950b775da70545.dir
+      size: 443454354
       nfiles: 2
     - path: src/localize/train.py
       md5: 0858715e0143dfcfbc97dd27e8a6e885
@@ -94,33 +94,33 @@ stages:
         TrainLocalizeParams:
           SEED: 25032023
           LR: 0.0005
-          EPOCHS: 1
+          EPOCHS: 3
     outs:
     - path: out/checkpoints/localize
-      md5: 17d674ac6b63bf57359e92213d510355.dir
-      size: 33479563
-      nfiles: 1
+      md5: 2843869103a5b833b5737e3d987f30b2.dir
+      size: 100439073
+      nfiles: 3
     - path: out/models/localize
-      md5: b78ef1bb7f7ae0d473d461f672c43c30.dir
-      size: 33478619
+      md5: 1b31f33cc2ed0f756256115b9f5c0a27.dir
+      size: 33478747
       nfiles: 1
     - path: out/runs/localize/metrics.json
-      md5: 91c64ea80f3d7bf4e4405adbd03521e4
-      size: 140
+      md5: d991817d509f1b0e3298960d73f677ac
+      size: 142
     - path: out/runs/localize/plots/metrics
-      md5: 46bbfb0702d8e702a66cc68610f44a3e.dir
-      size: 66
+      md5: 48f2fb2b995cd90a524d4e3e11e623d7.dir
+      size: 166
       nfiles: 2
     - path: out/runs/localize/tensorboard
-      md5: 3ddbe4fba344641fd272a4f5d4b7a65b.dir
-      size: 252
+      md5: 7137cb65734b13d9aec8ac86f2e43764.dir
+      size: 4043
       nfiles: 3
   evaluate_localize:
     cmd: python3 -m src.localize.evaluate
     deps:
     - path: out/models/localize
-      md5: b78ef1bb7f7ae0d473d461f672c43c30.dir
-      size: 33478619
+      md5: 1b31f33cc2ed0f756256115b9f5c0a27.dir
+      size: 33478747
       nfiles: 1
     - path: src/localize/evaluate.py
       md5: 019a77986d597074e266d1ce2b835e2a
@@ -161,8 +161,8 @@ stages:
           - 84
     outs:
     - path: out/evaluations/localize/plots/images
-      md5: 78e495dcd4303efd47cc138eeaef06ce.dir
-      size: 67784
+      md5: ca849dd8d98c9fcb6843a3c2fb097a2e.dir
+      size: 67996
       nfiles: 10
   prepare_ocr:
     cmd: python3 -m src.ocr.prepare
@@ -202,26 +202,26 @@ stages:
           GRU_BLANK_CLASS: 36
         PrepareOCRParams:
           SEED: 25032023
-          MAX_IMAGES: 256
+          MAX_IMAGES: 250000
           TRAIN_SPLIT: 0.8
           IMG_SIZE:
           - 256
           - 256
     outs:
     - path: data/prepared/ocr
-      md5: 36502fe05d61b06734cb7fe92c2c7967.dir
-      size: 443088146
+      md5: a3a9bbc072d7801c7b1016dd780f4088.dir
+      size: 444206482
       nfiles: 2
     - path: out/prepared/ocr/plots/images
-      md5: 3b94af765b5f3e64561723d80ae53021.dir
-      size: 16775
+      md5: 3f1c0763f14a5b1acbebe292feea748b.dir
+      size: 15835
       nfiles: 5
   train_ocr:
     cmd: python3 -m src.ocr.train
     deps:
     - path: data/prepared/ocr
-      md5: 36502fe05d61b06734cb7fe92c2c7967.dir
-      size: 443088146
+      md5: a3a9bbc072d7801c7b1016dd780f4088.dir
+      size: 444206482
       nfiles: 2
     - path: src/models/cnn_ocr_model.py
       md5: d672a8524c6d769f9646d65193934bac
@@ -269,33 +269,33 @@ stages:
         TrainOCRParams:
           SEED: 25032023
           LR: 0.00025
-          EPOCHS: 1
+          EPOCHS: 2
     outs:
     - path: out/checkpoints/ocr
-      md5: e3ca123912aaa62527d7685b94538adf.dir
-      size: 60621027
-      nfiles: 1
+      md5: 38dc2aa4c73ec869355219a5d6f9bd3a.dir
+      size: 121236746
+      nfiles: 2
     - path: out/models/ocr
-      md5: c3501e4b85f9ff23ab406eca802711a8.dir
-      size: 60619231
+      md5: 3e0980fdc26cb1a5469fc2cbf558c8a9.dir
+      size: 60617642
       nfiles: 1
     - path: out/runs/ocr/metrics.json
-      md5: 1c67909ef86f77d03a3e9715e796a922
-      size: 134
+      md5: d8670f435bba793eddc0bbbfdb1a6015
+      size: 138
     - path: out/runs/ocr/plots/metrics
-      md5: ccdd29c32d8fa7de31eecbb46488dc8f.dir
-      size: 60
+      md5: 0ae2a4cbf0f45ed39cafe87ad22b2e86.dir
+      size: 109
       nfiles: 2
     - path: out/runs/ocr/tensorboard
-      md5: 731b70acc64ac24deeea19530234011d.dir
-      size: 252
+      md5: c53ccf540935ee7fed1a16790084ee41.dir
+      size: 6459
       nfiles: 3
   evaluate_ocr:
     cmd: python3 -m src.ocr.evaluate
     deps:
     - path: out/models/ocr
-      md5: c3501e4b85f9ff23ab406eca802711a8.dir
-      size: 60619231
+      md5: 3e0980fdc26cb1a5469fc2cbf558c8a9.dir
+      size: 60617642
       nfiles: 1
     - path: src/ocr/evaluate.py
       md5: 817a31e13242f39417a1e9fcb7a78089
@@ -338,8 +338,8 @@ stages:
           GRU_BLANK_CLASS: 36
     outs:
     - path: out/evaluations/ocr/plots/images
-      md5: 014ba96c4e2801488082b46e63054cc9.dir
-      size: 822749
+      md5: c757017e1551461ff83f549d73e0abb8.dir
+      size: 815205
       nfiles: 10
   prepare_stack:
     cmd: python3 -m src.stack.prepare
@@ -373,33 +373,33 @@ stages:
           - 84
         PrepareOCRParams:
           SEED: 25032023
-          MAX_IMAGES: 256
+          MAX_IMAGES: 250000
           TRAIN_SPLIT: 0.8
           IMG_SIZE:
           - 256
           - 256
         PrepareStackParams:
           SEED: 25032023
-          MAX_IMAGES: 256
+          MAX_IMAGES: 5000
     outs:
     - path: data/prepared/stack
-      md5: 1fb444c7c25ef691824a889ac6ac4ba9.dir
+      md5: be9e0489eee555b983478d25d4e9d7b9.dir
       size: 221542631
       nfiles: 1
   evaluate_stack:
     cmd: python3 -m src.stack.evaluate
     deps:
     - path: data/prepared/stack
-      md5: 1fb444c7c25ef691824a889ac6ac4ba9.dir
+      md5: be9e0489eee555b983478d25d4e9d7b9.dir
       size: 221542631
       nfiles: 1
     - path: out/models/localize
-      md5: b78ef1bb7f7ae0d473d461f672c43c30.dir
-      size: 33478619
+      md5: 1b31f33cc2ed0f756256115b9f5c0a27.dir
+      size: 33478747
       nfiles: 1
     - path: out/models/ocr
-      md5: c3501e4b85f9ff23ab406eca802711a8.dir
-      size: 60619231
+      md5: 3e0980fdc26cb1a5469fc2cbf558c8a9.dir
+      size: 60617642
       nfiles: 1
     - path: src/stack/evaluate.py
       md5: bdae368fef231ea3fb332a48b3f80bc5
@@ -468,9 +468,9 @@ stages:
           GRU_BLANK_CLASS: 36
     outs:
     - path: out/evaluations/stack/metrics.json
-      md5: a42e63eef8befa6394831b648b206fd6
-      size: 22
+      md5: 3ed64981c7255875c92424ef28187869
+      size: 28
     - path: out/evaluations/stack/plots/images
-      md5: b5465279478daef054a3f9f3f57a5caa.dir
-      size: 1899592
-      nfiles: 8
+      md5: 738bfa05782fe5bff4f0caeda90f5cad.dir
+      size: 2314406
+      nfiles: 11
