@@ -54,34 +54,35 @@ jobs:
           echo >> report.md
 
           # Compare ocr images to main branch
-          echo "## Localize model prediction" >> report.md
+          echo "## Localize Model Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
-            --targets out/evaluations/localize/plots/images/pred_0.png \
+            --target out/runs/localize/plots/metrics/validation/loss.tsv \
             --show-vega main > vega.json
           vl2png vega.json > localize_diff.png
-          echo '![](./localize_diff "Localize model prediction")' >> report.md
+          echo '![](./localize_diff "Localize model val loss")' >> report.md
           echo >> report.md
 
           # Compare ocr images to main branch
-          echo "## OCR model prediction" >> report.md
+          echo "## OCR Model Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
-            --targets out/evaluations/ocr/plots/images/pred_0.png \
+            --target out/runs/ocr/plots/metrics/validation/loss.tsv \
             --show-vega main > vega.json
           vl2png vega.json > ocr_diff.png
-          echo '![](./ocr_diff.png "OCR model prediction")' >> report.md
+          echo '![](./ocr_diff.png "OCR model val loss")' >> report.md
           echo >> report.md
           echo >> report.md
 
+          # NOTE: dvc plots diff with images does not work with vega-lite
           # Compare stack images to main branch
-          echo "## Stack prediction" >> report.md
-          echo >> report.md
-          dvc plots diff \
-            --targets out/evaluations/stack/plots/images/stack_pred_0.png \
+          # echo "## Stack prediction" >> report.md
+          # echo >> report.md
+          # dvc plots diff \
+            --target out/evaluations/stack/plots/images/stack_pred_0.png \
             --show-vega main > vega.json
-          vl2png vega.json > stack_diff.png
-          echo '![](./stack_diff.png "Stack prediction")' >> report.md
-          echo >> report.md
+          # vl2png vega.json > stack_diff.png
+          # echo '![](./stack_diff.png "Stack prediction")' >> report.md
+          # echo >> report.md
 
           cml comment create --target=pr --publish report.md
