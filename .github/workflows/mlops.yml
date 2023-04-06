@@ -1,7 +1,8 @@
 name: CML CI
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
   # Runs on pull requests
   pull_request:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  report:
+  report-pr:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -53,14 +54,14 @@ jobs:
           echo "# Models" >> report.md
           echo >> report.md
 
-          # Compare ocr images to main branch
+          # Compare localize images to main branch
           echo "## Localize Model Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
             --target out/runs/localize/plots/metrics/validation/loss.tsv \
             --show-vega main > vega.json
           vl2png vega.json > localize_diff.png
-          echo '![](./localize_diff "Localize model val loss")' >> report.md
+          echo '![](./localize_diff.png "Localize model val loss")' >> report.md
           echo >> report.md
 
           # Compare ocr images to main branch
@@ -71,7 +72,6 @@ jobs:
             --show-vega main > vega.json
           vl2png vega.json > ocr_diff.png
           echo '![](./ocr_diff.png "OCR model val loss")' >> report.md
-          echo >> report.md
           echo >> report.md
 
           # NOTE: dvc plots diff with images does not work with vega-lite
