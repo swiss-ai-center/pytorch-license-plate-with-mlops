@@ -314,7 +314,7 @@ python3 -m src.save_stack
 python3 -m src.serve
 ```
 
-You can the open the browser and go to `http://localhost:80` to test the model.
+You can the open the browser and go to `http://0.0.0.0:8080` to test the model.
 
 ## Further Improvements
 
