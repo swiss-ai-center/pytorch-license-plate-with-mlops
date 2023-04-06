@@ -55,7 +55,7 @@ jobs:
           echo >> report.md
 
           # Compare localize images to main branch
-          echo "## Localize Model Validation Loss" >> report.md
+          echo "## Localize Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
             --target out/runs/localize/plots/metrics/validation/loss.tsv \
@@ -65,7 +65,7 @@ jobs:
           echo >> report.md
 
           # Compare ocr images to main branch
-          echo "## OCR Model Validation Loss" >> report.md
+          echo "## OCR Validation Loss" >> report.md
           echo >> report.md
           dvc plots diff \
             --target out/runs/ocr/plots/metrics/validation/loss.tsv \
