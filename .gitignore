@@ -13,8 +13,6 @@ __pycache__/
 ## Project specific
 data/test
 
-src/testing/
-
 ## DVC
 
 # DVC files
